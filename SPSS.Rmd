@@ -1,0 +1,31 @@
+---
+title: "SPSS"
+output: html_document
+date: '2022-09-27'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Reading and writing **SPSS** datasets in R
+------------------------------------------
+
+> **BECAREFUL WITH VARIABLES THAT HAVE LABELS**. They might be converted to factor (nominal) variables, even if they are stored as numeric on SPSS. 
+
+### Write a SPSS file from an R object
+
+```{r}
+data("airquality")
+haven::write_sav(data=airquality, path="airquality.sav")
+```
+
+### Read a SPSS file into R
+
+```{r}
+df <- haven::read_sav(file = "airquality.sav")
+str(df)
+library(pander)
+pander(head(df))
+```
+
