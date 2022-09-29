@@ -1,0 +1,97 @@
+---
+title: "Psy9510 Study"
+output: html_document
+date: '2022-09-29'
+---
+
+
+Learning R with Markdown
+============================================================
+
+In this course, I introduced you to R Markdown. Also, during the lectures, 
+I asked you to use R Markdown as a notebook, to write the R code that you learn 
+in the class and explain it to yourself in your own way. Below, I ask some 
+open-end questions to evaluate your experience of the class. This feedback is 
+very valuable to me as I would like to refine this method, understand its strength 
+and weakneces, how difficult it was for you to get started with it, did you enjoy 
+working with it, and whether do you think you will continue using it in the future. 
+Please take your timewrite your answers below and email this Markdown back to me. 
+**This is NOT the course evaluation. It is a qualitative study that I wish to carry out to learn about your experiences during this course. It is NOT a part of your course assessment and your participation is completely voluntary.**.  
+
+> Below, you can write your answer after the "...". These are open-end question and feel 
+free to write as much as you like
+
+
+
+1. MY OVERALL ASSESSMENT ABOUT LEARNING R WITH RMARKDOWN WAS ...
+============================================================
+
+
+
+
+
+
+
+
+
+2. I THINK THERE ARE SOME ADVANTAGES AND/OR DISADVANTAGES IN LEARNING R WITH RMARKDOWN ...
+============================================================
+
+
+
+
+
+
+
+
+
+
+
+3. OVERALL, MY INDIVIDUAL EXPERIENCES ABOUT RMARKDOWN WERE...
+============================================================
+
+
+
+
+
+
+
+
+4. USING RMARKDOWN RIGHT FROM THE START OF THE COURSE WAS ...
+============================================================
+
+
+
+
+
+
+
+
+5. DO YOU RECOMMEND TEACHING STATISTICS WITH RMARKDOWN? WHY?
+============================================================
+
+
+
+
+
+
+
+
+6. HOW LIKELY IS IT THAT YOU USE RMARKDOWN IN YOUR DAILY WORK AND WHY?
+============================================================
+
+
+
+
+
+
+
+7. DO YOU THINK RMARKDOWN FACILITATED LEARNING R? WHY?
+============================================================
+
+
+
+
+
+
+
