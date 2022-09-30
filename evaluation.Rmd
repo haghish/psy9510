@@ -11,12 +11,17 @@ Learning R with Markdown
 In this course, I introduced you to R Markdown. Also, during the lectures, 
 I asked you to use R Markdown as a notebook, to write the R code that you learn 
 in the class and explain it to yourself in your own way. Below, I ask some 
-open-end questions **to evaluate your experience of the class (not the course itself, your experience about learning R with RMarkdown)**. This feedback is 
-very valuable to me as I would like to refine this method of teaching, understand its strength 
-and weakneces, how difficult it was for you to get started with it, did you enjoy 
-working with it, and whether do you think you will continue using it in the future. 
-Please take your timewrite your answers below and email this Markdown back to me. 
-**This is NOT the course evaluation. It is a qualitative study that I wish to carry out to learn about your experiences during this course. It is NOT a part of your course assessment and your participation is completely voluntary.**.  
+open-end questions **to evaluate how you experienced this learning method (not the course itself, your experience about learning R with RMarkdown)**. This feedback is 
+very valuable to me as I would like to 
+
+1. Refine this method of teaching
+2. Understand its strengths and weakneces
+3. How difficult it was for you to get started with it
+4. Did you enjoy working with it
+5. Whether do you think you will continue using it in the future. 
+
+Please take your time to write your answers below and email this RMarkdown back to me. 
+**This is NOT the course evaluation. It is a qualitative study that I wish to carry out to learn about your experiences during this course. It is NOT a part of your course assessment and your participation is completely voluntary. Participating in this study has no influence on your grade. THANK YOU IN ADVANCE.**.  
 
 > Below, you can write your answer after the "...". These are open-end question and feel 
 free to write as much as you like
