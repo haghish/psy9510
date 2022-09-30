@@ -1,0 +1,330 @@
+---
+title: "Day 2"
+author: "Emily Gabriela Vira"
+date: "2022-09-27"
+output: html_document
+---
+
+# Tuesday R course 
+We start the day by learning about for loops. A for loop can be used for repetitive tasks, when you need to use the same function many times on a vector/dataframe. 
+
+So, here, Stefan is asked to drink 5 beers. We define "b" as 1:5 beers, and you can get the values or amount of beers drunk printed out in a for loop. 
+```{r}
+for(b in 1:5) { 
+  print(b)
+}
+  
+```
+
+Let's try another example, with characters.
+```{r}
+S <- c("some", "character", "for", "the", "example")
+```
+
+The indiancurry variable is defined by each of the indexes in S.
+```{r}
+for(indiancurry in S) { 
+print(indiancurry)}
+
+length(indiancurry)            
+# but it is still a vector of 1, and it is fixed to the last element in the vector. 
+indiancurry
+```
+
+A way to print all five values through indexing. 
+```{r}
+for(b in 1:5) {print(S[b])}   
+# Here we are saying that b is defined as 1:5, and the values will be that of S. 
+```
+
+# RECAP
+```{r}
+getwd()       # what is the current working directory
+data()        # a function to call on data that is already loaded into R
+```
+
+# How to read & store data
+`saveRDS()`
+`readRDS()`
+```{r}
+data(iris)                            # Here we are loading the iris data
+saveRDS(iris, "testdata.RDS")         # Now we can save the data to our working directory
+
+df2 <- readRDS("testdata.RDS")        
+# And here you can read the file name (the data) back into R, and assign it to a dataframe (object)
+```
+
+```{r}
+(list = ls())                       
+# lists the objects that are currently in your global environment
+rm(list = ls())                    
+# rm() is to remove an object from your global environment, which is where all your dataframes and defined objects are stored. 
+```
+
+# Reading different data formats into R
+CSV - comma separated values. `read.csv()` - function for reading CSV file.There are important arguments here that we read from the help file, like for example,header = T, which will allow R to read the first row as column names. This will help so R does not read the rest of the test as a character. 
+```{r}
+# With this argument you can download or "write" a csv file to be saved to your working directory.                 
+write.csv(iris, file = "data_iris.csv")   
+
+```
+
+But say we want to remove this file from our WD. Simply can use the `unlink()` function.
+```{r}
+unlink("data_iris.csv") 
+```
+
+R can read pretty much ANYTHING.Html files, books, anything you want. Even zipped files.You can retrieve files from an unzipped file with the `unzip()` function.
+
+And you can download data files from the Internet with `download.file()` 
+
+```{r}
+# Now let's load another data set into our global environment.
+data("airquality")           
+# This function allows you to view the data file in R.
+View(airquality)             
+# This provides the dimensions of the data set, there are 153 rows and 6 columns.
+dim(airquality)              
+# This summarizes the data and the types of variables, similar to dim, but with more information.
+str(airquality)       
+
+```
+
+# Understanding subsetting - let's break it down.
+```{r}
+# Here we are using the subset function directly instead of the [] from base R. The first argument is telling R what data we want to use, then we are asking for the observations that are above 80, but we also want the Ozone variable as well as Temp.
+subset(airquality, Temp > 80, select = c(Ozone, Temp))   
+
+# There is also a new argument we haven't used before, select =. It does exactly what the name suggests, it selects the variables you indicate.
+
+# Here we have a logical operator >, so we can expect to be returned which observations are TRUE being more than 80, and which are FALSE being less than 80.
+airquality$Temp > 80                                     
+
+# Here we are subsetting only those observations that have the value of 1 in the Day variable, and we will take all the columns except for Temp, so hence the minus sign.
+subset(airquality, Day == 1, select = -Temp)             
+
+# Here we are just selecting the variables Ozone to Wind, and no others. 
+subset(airquality, select = Ozone:Wind)                 
+
+# Here we are selecting all the columns (variables) except for Temp and Wind.We can combine the variable names with c to tell R to remove both. 
+subset(airquality, select = - c(Temp, Wind))             
+
+
+```
+
+The function `colnames()` gives you the column names of a data frame. 
+
+```{r message=FALSE, warning=FALSE}
+library(haven)
+library(readstata13)     # These were newly installed. But I don't use stata.
+# Wasn't familiar with this package, really useful for reading different data files into R.
+library(foreign)       
+
+```
+
+`df <- foreign::read.spss()`  The :: directly accesses a function for a package.
+`use.value.labels()` For SPSS data, for a factor that has predefined values.
+
+A way to unload packages. Sometimes some packages ay interfere with eachother, a way to handle this is to either use the :: or the detach a package. 
+`detach("package name", unload = T)`.
+
+Another way to check the structure of a variable you can use:
+```{r}
+x <- 1:10
+# Structure, can be used as an alternative to summary (although not as thorough),it describes the object you define.
+str(x) 
+# This function allows you to see whether your object is a factor, will return a Boolean (T/F).
+is.factor(x)                               
+# This function turns your object into a factor. It sets the different values as levels.
+as.factor(x)                               
+# This function allows you to see whether your object is ordered, will return a Boolean (T/F).
+is.ordered(x)                               
+as.ordered(x)
+# This is just the type of the object you define.
+class(x)                                    
+
+```
+
+# Tidyverse time
+## Why tidyverse is brilliant
+It is a collection of packages that allows you to many cool things, which we will explore later. 
+```{r message=FALSE, warning=FALSE}
+library(readxl)          # Package to read excel files from tidyverse.                      
+# the code to read an excel file looks so: df <- readxl::read_excel("", sheet = )          
+
+# With the argument sheet =, you can select which sheets you want , and what rows and columns, or NULL for all, col_names = T - to get the column names (similar to the header argument for csv), path = file.
+                                              
+```
+
+```{r}
+readxl_example() # Different data sets that are available in R
+```
+
+Write an SPSS file
+```{r}
+haven::write_sav(data = airquality, path = "airquality.sav")
+```
+
+Read the SPSS file into R
+`haven::read_spss()` & `foreign::read.spss()`
+Either work to load SPSS data into R.
+
+# Describing data
+```{r}
+summary(cars)        
+# Provides a thorough summary, including min, max, mean, median, 1st & 3rd quartiles, even how many NAs (missing values).
+```
+
+```{r}
+data(attenu)
+is.na(attenu$station)            
+# With this function you are asking whether there are missing values in the dataset, you will get T/F statements in return.
+
+length(is.na(attenu$station))    
+# This function would provide the amount of observations there are in the attenu data rather than how many NAs there are.
+
+sum(is.na(attenu$station))       
+# You can use sum on T & F statements because R interprets these logical responses as 1(T)and 0(F). Therefore, with this function are you able to get the sum of missing values by using by sum() & is.na().
+```
+
+# Reserved words
+Important words that are reserved to R.
+Some examples below of logical conditions.
+First we tried an if else argument. We're asking R if our variable event in the attenu data set is numeric, then calculate the mean, if it is not, then provide the structure. 
+```{r}
+if( is.numeric(attenu$event)) {
+ mean(attenu$event)
+} else{                          
+  # I had an error here, Error:unexpected 'else' in "else", so I googled it. Not surprisingly R is sensitive to where you place your functions. I had the else function on a separate line, and R could not read this if and else argument together. Solution: move "else" right after the curvy bracket after the mean function.
+  str(attenu$event)
+}                                
+# The variable event is numeric, therefore we get the mean and the second else argument is ignored.
+```
+
+```{r}
+if( is.numeric(iris$Species)) {
+ mean(iris$Species)
+} else{
+  str(iris$Species)
+ }                                
+# Here however, the variable Species in iris is not numeric, meaning the mean can not be calculated. So, R moves on to the next argument and provides the structure. 
+```
+
+# Time to try out some plots! 
+```{r}
+cars$dist
+plot(cars$dist)                    
+# Now this just plots where the observations are placed for the variable dist in the cars dataset.
+```
+
+```{r}
+plot(cars$speed, cars$dist)       
+# Here we run a proper scatter plot with speed and dist variables.
+```
+# Understanding character variables
+```{r}
+S <- c("some", "character", "for", "the", "example")
+paste(S)     # Consider everything as one word, unless you request sep = ";" 
+
+as.character(x)   # Sets an object to be a character.
+x              
+
+is.character(S)   # Asks whether an object contains characters.
+
+```
+
+```{r}
+a = 100
+b = 200
+cat("The value of a is", a, "and the value of b is", b, "\n")             
+
+# A different kind of printing, you have to add an end of the line sign "\n", and the function combines both characters and numbers.
+```
+
+```{r}
+
+vec <- c(25:30)
+  
+for(pasta in vec){
+  print(pasta)
+}
+
+for(pasta in vec){
+  paste(pasta)         # Does not work
+}
+
+for(pasta in vec){     # All observations without spaces.
+  cat(pasta)
+}
+```
+ A way to manipulate a character
+```{r}
+# substring(x, start, stop): An example, x - is a character vector, start or first - integer, is the first element to be extracted or replaced, stop or last - integer, is  the last element to be replaced.
+fn <- "tofu"
+nchar(fn)  # This function returns the number of characters the element contains
+
+substr("cooked tofu", start = 1, stop = 2)    
+# Start at the first character and finish on the second.
+substr("cooked tofu", start = 8, stop = 12)   
+# Start at the 8th character and finish on the 12th.
+
+strsplit(x = "cooked tofu", split = " ")     
+# This function along with the split argument will split up the string of elements.
+```
+
+Now we'll test out substring with some more data. 
+```{r}
+state.name    # Here you can use a data set with all 50 US states. 
+```
+
+```{r}
+substring(state.name, 1, 3)  
+
+# Start with the first character, stop at the third character. You get the first three characters of each state in x (the data frame).
+```
+
+```{r}
+LETTERS == "R"           # Gives you a list of FALSE & TRUE for the letter R
+
+which(LETTERS == "R")    # which() tells you which one is TRUE. Letter 18 is R!
+```
+
+R interpreter works as breaking down problems bit by bit. If you have a long line of code, break it down. What do the different parts do. This will help understand what you want to do in the bigger picture. Start at the values, then the function and then to the nested function. 
+
+# Stringr 
+Really useful for cleaning variables. Contains 7 main functions (or verbs). These in particular work with patterns.
+
+`str_detect` shows whether there are any matches to a pattern.
+`str_count` counts the number of patterns.
+`str_subset` extracts matching elements to a pattern.
+`str_locate` shows the position of a match to a pattern
+`str_extract` shows what is the exact text that matches a pattern.
+`str_match` extracts parts of the match defined by parentheses.
+`str_replace` replaces the matches with a new text you define.
+
+Examples below taken from stringr on the tidyverse webpage.
+```{r}
+library(stringr)
+ x <- c("why", "video", "cross", "extra", "deal", "authority")    
+str_detect(x, "[aeiou]")
+str_count(x, "[aeiou]")
+str_subset(x, "[aeiou]")
+str_locate(x, "[aeiou]")
+str_extract(x, "[aeiou]")
+str_match(x, "(.)[aeiou](.)")
+str_replace(x, "[aeiou]", "?")
+```
+
+I imagine that stringr could come in handy when for example checking for repeated observations based on ID codes. & perhaps would help with fixing any ID codes or any other value that was incorrectly inputed. 
+
+```{r}
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+nchar(x [1])        # Number of characters in the first element.
+```
+
+Regular Expressions
+```{r}
+# devtools::install_github("gadenbuie/regexplain")
+```
+
+# Factors

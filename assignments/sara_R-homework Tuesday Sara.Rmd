@@ -1,0 +1,360 @@
+---
+title: "R-homework Tuesday Sara"
+author: "Sara Berger Marjanovic"
+date: "2022-09-26"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+# Loops
+
+## What are loops?
+
+R-loops can be used to execute statements (eg. mean, summary, paste) over a number of element in an R-object. We can also set limitations to which elements should be included. 
+
+## Creating loops
+
+### For-loops
+
+A for loop in R can be used to iterate over the elements of an R object
+
+Example:
+
+```{r}
+for(b in 1:5) {
+  print(b)
+}
+  
+q = c('some', 'character', 'for', 'the', 'example')
+for(indiancurry in q) {
+  print(indiancurry)
+}
+
+
+```
+
+### If-loops
+
+If/else-loops are also known as conditionals, because we can apply conditions to our loop. 
+If this condition is met -> we do this
+If else -> we do this instead
+
+```{r}
+#I don't know what went wrong here :/
+#my_mean = function(my_vector){
+  #if(class(my_vector)=="character")
+   #print("This is not a numeric vector, dummy!")
+#} else {
+  #sum_vector=0
+  #for(element in my_vector)
+    #sum_vector = sum_vector + element
+#}
+
+#mean_vector = sum_vector/length(my_vector)
+#return(mean_vector)
+```
+
+# Working with data
+
+## Loading data into R
+
+When you load a file into R, you need to specify the file path
+
+We have different open source packages for loading different data files into R.
+For Stata, xlxs., SPSS, and CSV data there are different packages and functions.
+
+### CSV data format
+
+```{r}
+help("read.csv")
+```
+
+Description:
+
+Reads a file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file.
+File can also be a complete URL!
+
+```{r}
+help("write.csv")
+```
+
+Description:
+
+Write.table prints its required argument x (after converting it to a data frame if it is not one nor a matrix) to a file or connection.
+
+```{r}
+write.csv(iris, file="irisdata.csv")
+```
+
+### Reading Stata data
+
+#### Read.dta13
+
+read.dta13 reads a Stata dta-file and imports the data into a data.frame. readdta13 is part of the readstata-package. 
+
+```{r}
+library(readstata13)
+help("read.dta13")
+library(haven)
+library(foreign)
+```
+
+:: tells R we are using the command from this exact library
+
+### Reading SPSS files
+
+#### Read SPSS
+
+```{r}
+#read.spss()
+help("read.spss")
+```
+
+read.spss reads a file stored by the SPSS save or export commands.
+
+reas.spss was orignally written in 2000 and has limited support for changes in SPSS formats since (which have not been many - LOL).
+
+### Reading xlsl. files
+
+```{r}
+library(readxl)
+help("readxl")
+```
+
+read_excel() calls excel_format() to determine if path is xls or xlsx, based on the file extension and the file itself, in that order. Use read_xls() and read_xlsx() directly if you know better and want to prevent such guessing.
+Sheet to read. Either a string (the name of a sheet), or an integer (the position of the sheet). Ignored if the sheet is specified via range. If neither argument specifies the sheet, defaults to the first sheet.
+xl-sheets are complicated. This package enables you to specify sheets and columns
+
+Example:
+
+```{r}
+#read_excel(xlsx_example, sheet = "budget_this_year")
+#read_excel(xls_example, sheet = 4)
+```
+
+
+### RDS-functions
+
+We can also use the rds-functions to save an R-object to a file, and then restore it. 
+
+.rds is a binary 
+
+
+```{r}
+# saveRDS()
+# readRDS()
+```
+
+#### readRDS
+
+```{r}
+#readRDS(object, file = "file name")
+```
+
+
+#### saveRDS
+
+```{r}
+# saveRDS(iris, "testdata_Tuesday.RDS")
+
+```
+
+saveRDS only send one file
+
+## Cleaning workspace
+
+### Removing all objects in global environment
+
+```{r}
+#rm(list=ls())
+
+s=34
+rm(s)
+```
+
+### Some handy functions to get an overview of your dataframe
+
+dim() gives the dimensions of your R-object (eg. a data frame)
+
+str() gives an overview of the the internal structure of a R object. If we use the str-command on a data frame we will get the class of every column, and this can be handy if we want to know what functions we can use on the different columns. 
+
+subset() is another way to subset a dataframe. We can select the rows and columns that we would like to look at. But we can also subset by using square brackets with positions or the dollar-sign.
+
+```{r}
+data("airquality")
+
+dim(airquality)
+str(airquality)
+subset(airquality, Day==1, select = -Temp)
+```
+
+### Column- and rownames
+
+Retrieve or set the row or column names of a matrix-like object, like this:
+
+```{r}
+#rownames()
+#colnames()
+```
+
+If we would like to set new columnnames we can create a vector with new columnnames and set them as such.
+
+
+## ´is.na´-function
+
+```{r}
+help("is.na")
+help("as.na")
+```
+NA is a logical constant of length 1 which contains a missing value indicator. NA can be coerced to any other vector type except raw. There are also constants NA_integer_, NA_real_, NA_complex_ and NA_character_ of the other atomic vector types which support missing values: all of these are reserved words in the R language.
+
+The generic function is.na indicates which elements are missing
+The generic function is.na<- sets elements to NA.
+The generic function anyNA implements any(is.na(x)) in a possibly faster way (especially for atomic vectors).
+
+
+# Character vectors
+
+Character vectors are vectors with character-elements in them. 
+Example:
+
+```{r}
+cool_chr_vector = c("You", "are", "very", "cool", "and", "very", "loved")
+```
+
+## Paste-function
+
+```{r}
+help("paste")
+```
+
+Paste converts its arguments (via as.character) to character strings, and concatenates them (separating them by the string given by sep). If the arguments are vectors, they are concatenated term-by-term to give a character vector result. Vector arguments are recycled as needed, with zero-length arguments being recycled to "" only if recycle 0 is not true or collapse is not NULL.
+
+Example:
+
+```{r}
+paste("Hello", "I", "am", "the", "judge", "Ola", "is", "number", 1)
+```
+
+
+## as.character-function
+
+```{r}
+help(as.character)
+```
+as.character and is.character are generic functions that reate or test for objects of type "character".
+
+Example:
+
+```{r}
+wrong_vector = c(1,2,3,4,5)
+as.character(wrong_vector)
+is.character(wrong_vector) #now true because I made it into a character-vector
+```
+
+We can write methods to handle specific classes of objects
+
+```{r}
+q = c(1:50)
+
+for (pasta in q) {
+  print(pasta)
+}
+```
+
+## cat-function
+
+The cat-function takes different elements, convert them into character-types, combine them and prints them.
+
+```{r}
+help(cat)
+cat("I", "am", "learning", "R")
+```
+Outputs the objects, concatenating the representations. cat performs much less conversion than print.
+
+# Manipulating character data
+
+```{r}
+help(substring)
+help("strsplit")
+```
+
+### Substring
+
+Extract or replace substrings in a character vector.
+
+Arguments
+x, text	a character vector.
+
+start, first	integer. The first element to be extracted or replaced.
+
+stop, last	integer. The last element to be extracted or replaced.
+
+value	a character vector, recycled if necessary.
+
+```{r}
+substr("cooked tofu", start=1, stop=2)
+```
+
+
+### Stringsplit
+
+Split the elements of a character vector x into substrings according to the matches to substring split within them.
+
+```{r}
+strsplit(x="cooked tofu", split = " ")
+```
+
+```{r}
+substring(state.name,1,3)
+```
+
+## which-function
+
+```{r}
+help(which)
+```
+
+Give the TRUE indices of a logical object, allowing for array indices.
+
+```{r}
+LETTERS == "R"
+which(LETTERS == "R")
+```
+
+## Stringr-package
+
+Stringr is a tidyverse-packeage that can help with data cleaning and string-manipulations.
+Stringr-functions take character-vectors as first argument.
+
+Strinr-cheetsheat: [https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf]
+
+There are seven main verbs that work with patterns:
+
+str_detect(x, pattern) tells you if there’s any match to the pattern.
+
+
+str_count(x, pattern) counts the number of patterns.
+
+
+str_subset(x, pattern) extracts the matching components.
+
+
+str_locate(x, pattern) gives the position of the match.
+
+
+str_extract(x, pattern) extracts the text of the match.
+
+
+str_match(x, pattern) extracts parts of the match defined by parentheses.
+
+
+str_replace(x, pattern, replacement) replaces the matches with new text.
+
+
+str_split(x, pattern) splits up a string into multiple pieces.
+
+
+## Regexplain-package

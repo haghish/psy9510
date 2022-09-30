@@ -1,0 +1,203 @@
+---
+title: 'MerkdownPhD #2'
+output: html_document
+date: "2022-09-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# DAY 2 
+
+## Loops: 
+For repeating data with one short formula instead of typing down everything. 
+For cleaning of data. Using the function:
+for (variable in vector) {
+  print (variable)
+}
+```{r}
+for (b in 1:5){
+  print(b)
+}
+```
+
+```{r}
+S <- c("some", "character", "for", "the", "example")
+S
+for (indiancurry in S) {
+  print(indiancurry)
+}
+```
+
+```{r}
+for (b in 1:5) {
+  print(S[b])
+}
+```
+
+## Saving data
+For reading r data: data(iris) - SaveRDS (iris, "testdata.RDS). 
+```{r}
+data(iris)
+saveRDS(iris, "test.RDS")
+```
+
+## List objects
+ls and objects return a vector of character strings giving the names of the objects in the specified environment.
+```{r}
+ls()
+```
+
+## Read data format 
+CSV common data files from internet, separated by comma or similar. write.csv saves the selected file. Unlink removes the selected files. Read.csv()
+```{r}
+data(iris)
+write.csv(iris, file = "iristest.csv")
+getwd()
+unlink("iristest.csv")
+readRDS("test.RDS")
+
+```
+
+## Reading stata data 
+
+```{r}
+library(readstata13)
+library(foreign)
+library(haven)
+```
+
+## Reading excel
+read_excel() calls excel_format() to determine if path is xls or xlsx, based on the file extension and the file itself, in that order. Use read_xls() and read_xlsx() directly if you know better and want to prevent such guessing.
+```{r}
+library(readxl)
+library(tidyverse)
+readxl_example("clippy.xls")
+xlsx_example <- readxl_example("datasets.xlsx")
+read_excel(xlsx_example)
+excel_sheets(xlsx_example)
+read_excel(xlsx_example, sheet = "chickwts")
+```
+
+## Subset
+Extracting information from a data set. subset(x, subset, ...)
+```{r}
+subset(airquality, Temp > 80, select = c(Ozone, Temp))
+subset(airquality, Day == 1, select = -Temp)
+subset(airquality, select = Ozone:Wind)
+subset(airquality, Day == 1, select = -c(Temp, Wind))
+```
+colnames() and rownames(). Retrieve or set the row or column names of a matrix-like object.
+
+## Factor
+The function factor is used to encode a vector as a factor (the terms ‘category’ and ‘enumerated type’ are also used for factors). If argument ordered is TRUE, the factor levels are assumed to be ordered. 
+```{r}
+is.factor(airquality$Temp)
+```
+
+## Reading and writing **SPSS** datasets in R
+
+**BE CAREFUL WITH VARIABLES THAT HAVE LABELS**. They might be converted to factor (nominal) variables, even if they are stored as numeric on SPSS. 
+
+### Write a SPSS file from an R object
+
+```{r}
+data("airquality")
+haven::write_sav(data=airquality, path="airquality.sav")
+```
+
+### Read a SPSS file into R
+
+```{r}
+df <- haven::read_sav(file = "airquality.sav")
+str(df)
+library(pander)
+pander(head(df))
+```
+
+## Summary 
+Using the functions view(), data()
+```{r}
+colnames(attenu)
+rownames(attenu)
+vec <- colnames(attenu)
+length(vec)
+class(vec)
+vec[3]
+vec2 <- vec[3:1]
+summary(attenu, digits = 4)
+```
+
+
+## NA (null): 
+NA is a logical constant of length 1 which contains a missing value indicator
+```{r}
+if (is.numeric(iris$Species)) {
+  mean(iris$Species) 
+} else {
+  str(iris$Species)
+}
+is.na(attenu$station)
+length(is.na(attenu$station)) #length is the whole vector
+sum(is.na(attenu$station)) #number of missing values 
+```
+
+## Plot
+```{r}
+plot(cars$dist)
+plot(cars$speed, cars$dist)
+```
+
+## After Lunch
+
+```{r}
+for (pasta in vec) {
+  print(pasta)
+  
+}
+
+```
+
+paste () Concatenate vectors after converting to character. paste(1:12)
+
+substr() Extract or replace substrings in a character vector. substr(x, start, stop)
+
+nchar() number of characters
+
+strsplit() Split the elements of a character vector x into substrings according to the matches to substring split within them. strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE). strsplit("cooked tofu", split = " ")
+[1] "cooked" "tofu" 
+
+Which() Give the TRUE indices of a logical object, allowing for array indices. 
+
+## Stringr 
+One of the packages of tidyverse. 
+Have 7 functions: str_detect/count/subset/locate/extract/match/replace 
+```{r}
+library(stringr)
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+str_length(x)
+nchar(x[1])
+```
+
+Summary: we learned the formula for loops, reading and saving files from csv, excel and SPSS, subsetting parts of a data set and some other small functions such as summary, length, names of the rows and the columns. 

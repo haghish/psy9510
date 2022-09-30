@@ -1,0 +1,187 @@
+---
+title: "PSY9510-Day2"
+author: "Heemin Kang"
+date: '2022-09-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## For-loop
+
+```{r}
+s <- c("a", "b", "c", "d", "e")
+for (b in 1:5){
+  print(s[b])
+}
+```
+
+# Work with data
+
+## RDS _vs_ RData
+  - RDS is used for saving (`saveRDS(object, file)`) and loading (`readRDS(file)`) a single object
+
+```{r}
+data(iris)
+saveRDS(object = iris, file = "testdata.RDS")   # File is saved in the current working directory
+a <- readRDS("testdata.RDS")                    # Assigning RDS file to a variable
+a
+#assign(a, readRDS("testdata.RDS"))             # Alternative way for assignment
+#dim(a)
+#str(a)
+```
+
+  - RData is more general and can include more than a single object
+
+## Cleaning workspace
+```{r}
+rm(list=ls())                                   # ls returns a vector of character strings giving the names of the objects in the specified environment
+```
+
+## CSV data format
+- CSV: Comma Separated Values
+  - Semicolon or tab could also be delimiter but requires a different syntax
+  - `read.csv`: Reads a file (even directly from a URL) in table format and creates a data frame from it
+    - args:
+      - file (character): file name
+      - header (logical): whether the file contains the names of the variables of its first line
+      - sep (character): delimiter ("," by default)
+
+```{r}
+write.csv(iris, file = "irisTest.csv")
+unlink("irisTest.csv")                          # deletes the file(s) or directories specified by x
+```
+
+## Fixed-width input files
+```{r}
+#help(write.fwf)
+```
+
+## Subsetting using `subset`
+- subset (logical): elements or rows to keep: missing values are taken as false.
+- select: columns to select from a data frame.
+- drop: passed on to [ indexing operator
+```{r}
+data(airquality)
+airquality$Temp > 80                                  # returns logicals if a specified column meets the given condition
+
+subset(airquality, Day == 1, select = -c(Temp, Wind))
+
+colnames(airquality)
+rownames(airquality)
+```
+
+## Reading Stata data
+
+library(readstata13)
+library(foreign)
+library(haven)
+
+df <- readstata13::read.dta13("path/to/file.dta")  # '::' specifies a function in a specific package
+df <- foreign::read.dta("path/to/file.dta")
+df <- haven::read_dta("path/to/file.dta")
+
+# Factors
+The function factor is used to encode a vector as a factor (the terms ‘category’ and ‘enumerated type’ are also used for factors). If argument ordered is TRUE, the factor levels are assumed to be ordered. For compatibility with S there is also a function ordered.
+
+```{r}
+is.factor(airquality$Temp)                                        # returns logical value if the given column is a factor
+```
+
+
+## Reading excel file using `readxl`
+The readxl package supports .xls and .xlsx
+
+```{r}
+library(readxl)
+library(tidyverse)
+
+readxl_example()                                                  # displays the list of examples
+xlsx_example <- readxl_example("datasets.xlsx")   
+read_excel(xlsx_example)                                          # reads both .xls and .xlsx files
+excel_sheets(xlsx_example)                                        # lists the sheet names
+read_excel(xlsx_example, sheet = "chickwts", range = "B1:D2")     # a worksheet can be specified by number as well
+
+```
+
+# Summary function
+```{r}
+summary(attenu)
+vec <- colnames(attenu)
+sum(is.na(attenu$station))                                                # checking the number of missing values
+
+if (is.numeric(attenu$event)){
+  mean(attenu$event)
+} else {
+  str(attenu$event)
+}
+```
+
+```{r}
+data(iris)
+if (is.numeric(iris$Species)){
+  mean(iris$Species)
+} else {
+  str(iris$Species)
+}
+```
+
+# Plot
+## Scatterplot
+For creating a scatter plot using `plot`
+```{r}
+plot(cars$speed, cars$dist)
+
+vec2 <- cars$speed
+is.character(vec)
+for (pasta in vec2){
+  print(pasta)
+}
+```
+
+Substring
+```{r}
+fn <- "tofu"
+nchar(fn)
+substr("cooked tofu", start=1, stop=2)
+substr("cooked tofu", start=8, stop=12)
+strsplit("cooked tofu", split = " ")
+```
+
+```{r}
+which(LETTERS == "R")
+which(ll <- c(TRUE, FALSE, TRUE, NA, FALSE, FALSE, TRUE))
+names(ll) <- letters[seq(ll)]
+which(ll)
+```
+
+## Some more stringr-functions
+-str_detect()
+-str_count()
+-str_subset()
+-str_locate()
+-str_extract()
+-str_match()
+-str_replace()
+
+# How to do nchar(), concatenate, and substring() with **stringr**
+```{r}
+library(stringr)
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+str_length(x)
+str_c(x, collapse = ", ")
+str_sub(x, 1, 2)
+```
+
+# Regular expressions
+[RegExplain](https://github.com/gadenbuie/regexplain)
+```{r}
+str_subset(x, "[aeiou]")
+library(regexplain)
+regexplain_gadget()
+```
+
+
+

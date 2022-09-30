@@ -1,0 +1,177 @@
+---
+title: "day 2"
+output: html_document
+date: '2022-09-27'
+---
+
+# DAY 2
+
+## Loops - a way of repeating actions
+
+Starts with the general for(b in 1:5){ print(b) }
+
+```{r}
+b <- c(1,2,3,4,5,6,7,8,9,10)
+string <- c("hei", "du", "se")
+for (b in string) {
+  print("hei")
+}
+
+s <- c("some", "character", "for", "the", "example")
+for (b in 1:5) {
+  print(s[b])
+}
+```
+
+```{r}
+for (b in 1:5) {
+  print(b)
+}
+```
+
+## Working with data
+
+### Loading data in R (not creating, as done yesterday, but importing e.g. spss data)
+
+csv files r files
+
+RDS format - binary file, open format, the official R format (in addition to R data files). Can save only one object.
+
+Rdata - multiple objects
+
+```{r}
+help("readRDS")
+saveRDS(iris, "testdata.RDS")
+```
+
+
+
+```{r}
+rm(list = ls())
+ls() #list obkects in the environment
+rm() #clearing the environment
+
+```
+
+Importing csv files
+
+read.csv = comma separated
+
+read.csv2 = semicolon separated
+
+unlink can be used to remove a file in the WD
+
+assign(x = df2, value = readRDS("test.RDS")
+
+```{r}
+data("airquality")
+View(airquality)
+dim(airquality)
+str(airquality)
+
+airquality2 <- subset(airquality, Day==1, select = -c(Temp, Solar.R)) #subsets all columns EXCEPT for the two specified and selects observations in day 1 only
+airquality3 <- subset(airquality, select = c(Temp, Solar.R)) #subsets two columns
+
+colnames(airquality) #gives the colnames of the dataset
+help(colnames)
+```
+
+```{r}
+library(readstata13) #recommended for stata files
+library(haven) #recommended for spss files
+library(foreign) #recommended for spss files
+```
+
+## Data classes
+A factor = a categorical variable - can be string or numerical (?)
+
+```{r}
+class(airquality$Temp)
+str(airquality$Temp)
+is.factor(airquality$Temp)
+```
+
+## Tidyverse/Excel
+
+Excel files can be complicated since it may have several sheets. Can specify the following way:
+df <- readxl::read_excel("path/to/file.xlsx",
+
+sheet = 1)
+
+Newer excel format = .xlsx
+
+```{r}
+library(tidyverse)
+library(devtools)
+library(readxl)
+```
+
+```{r}
+haven::write_sav(data=airquality, path = "airquality.sav")
+haven::read_sav(file="airquality.sav")
+
+```
+
+## Summary
+```{r}
+summary(cars)
+summary(cars$speed)
+plot(cars$speed, cars$dist)
+hist(cars$speed)
+```
+
+
+```{r}
+data("attenu")
+if(is.numeric(iris$Species)) {
+  mean(iris$Species)
+}else{
+  str(iris$Species)
+}
+sum(is.na(attenu$station))
+```
+
+length will not work since its a logical (i.e. 0 or 1) - meaning that sum must be used.
+
+
+## Character vectors
+
+Learn important printing functions, e.g.
+
+-   Paste(), cat(), paste0()
+
+-   substrings of a character vector
+
+    -   each character in a string has a number, which can be checked with nchar(vector)
+
+-   stringsplit
+
+-   which can be used for example if you are looking for NAs and you get true/FALSE - you can ask WHICH is na
+
+```{r}
+help(paste)
+state.name
+substring(state.name, 1, 3)
+?substring
+?which
+
+```
+
+## Stringr 
+Part of tidyverse - can be used for strings/character vectors. 
+7 important verbs:
+1. str_detect()
+2. str_count()
+3. str_subset()
+4. str_locate()
+5. str_extract()
+6. str_match()
+7. str_replace()
+
+tidyverse always use _ in the function names
+
+## Regular expressions
+Best to learn using the regexplain package
+
+
+

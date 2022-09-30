@@ -1,0 +1,211 @@
+---
+title: "Day 1"
+author: "Emily Gabriela Vira"
+date: "2022-09-26"
+output: html_document
+---
+
+# Monday Morning R course
+First we started with some basics! What are vectors, how to create objects (vectors), and how to print vectors/objects.
+We can define a vector as a train of objects, or a number or elements/components.
+```{r}
+print("Hello World")   
+```
+
+It's also always important to set your working directory - which is where R can expect to retrieve files/data from. The working directory you set is the absolute path.  
+```{r}
+setwd("C:/Users/EMGV/Desktop/KORT Resources/R course")     
+getwd()                       # This argument returns your current working directory. 
+```
+
+Say when knitting your Rmarkdown, you don't want to have all the warning messages or any output from loading a package, you can use the `message = F`, `warning = F` arguments in the curvy brackets on the top of the chunk. 
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)            # Loading tidyverse 
+```
+ 
+Now let's try out R as a calculator!
+```{r}
+2 + 2                         # can do simple addition.
+2 * 5                         # and multiplication.
+sqrt(89)                      # square root with sqrt().
+2*(5+6)/10                   
+# R can do your alegra equation that you don't remember how to do.
+```
+
+Now we assign some values to objects (otherwise creating objects).
+```{r}
+assign("A", value = 10)       
+# One way to assign values is to use the assign function(x = , value = ).
+
+A                             
+# Now you can see the value! This is also an alternative to the print function, you can just type your object and it will print.
+
+A <- 10                       
+# here you have the same result as using an assign function.
+
+# the c() can create a vector of elements that you define. These can be integers or characters.
+B <- c(20, 30)  
+B
+
+S <- c("cat", "dog")
+S
+
+x <- c(1:10)                  
+# the semi colon : stands for "through".In this case we are assigned x the values of 1 through 10
+x                               
+                              
+```
+
+We also tried sub-setting.Sub-setting is selecting specific values or characteristics from an object or data file.
+```{r}
+x [(x>8) | (x<5)]            
+# Here we use square brackets to subset.The | symbol means OR. Here we are asking for all the values in x that are greater  than 8 or less than 5.
+```
+
+We made some logical statements & tested logical operators. Otherwise know as a boolean - true or false statements.
+```{r}
+TF <- c(TRUE, T, T, F, F, F)  
+# You can write out TRUE in all caps or just the letter T, same goes for FALSE.
+
+x != 20                       
+# != - is not equal to operator
+A < 20                       
+# Less than operator
+TF == 1:6                    
+# == - exactly equal to, which means there is no exception to what the object is equal to.It's either the value you indicate or not. 
+                              
+# In this example we are asking whether TF (our object defined above) is exactly equal to 1 through 6. The code returns true/false statements, with only 1 being true. Now why is that?
+
+TF == c(1, 1, 1, 0, 0, 0) 
+# Turns out 1 is also equal to T and 0 is equal to F. 
+```
+
+## Creating a list
+- List 1
+- List 2
+  - List 3
+  - List 4
+  
+## Working with dynamic R tables
+
+A better way to create tables with R! Use `pander`
+
+To test out pander we used the base data available in R, called cars.
+```{r warning=FALSE}
+data(cars)              # use can use the `data()` to load data available in R.
+library(pander)
+pander(cars)
+```
+
+BUT, the table produced is too long. We want say just 5 rows with the two columns. How do we do that?
+
+```{r}
+pander(head(cars))            # you can use the head() which produces the first
+pander(tail(cars, n = 3L))     
+# L is telling R that the number is an integer,we can either keep it or remove it - however including the L reduces the computation load.
+```
+
+```{r}
+data(iris)
+pander(head(iris, n = 5L))
+```
+
+## How to create a data set in R 
+```{r eval=FALSE, include=FALSE}
+?data.frame                     
+# First we looked into the help file on the data.frame(). In plain language a the function creates a data frame that is two dimensional,with rows and columns, and has properties of matrices and lists. 
+```
+
+Let's print all the English letters! It's deifned automatically in R with the `LETTERS` argument. 
+```{r}
+LETTERS
+# But we want only a few letters,so we use the subsetting we learned earlier. 
+L3 <- LETTERS[1:3]
+```
+
+
+## Subsetting data in R
+[index1, index 2] - index 1 would be the rows you want, and index 2 are the columns you want.
+```{r}
+print(iris[10:15,])             
+# Here we are asking the rows 10 through 15,and all the columns.
+
+pander(iris[12:14, 2:5])        
+# Here we are asking for the rows 12 through 14, with the second through fifth columns, we also added it into a neat table instead of just printing it freely.
+
+# You can even subset specific rows or columns,and repeat rows/columns by using the c (bind function).
+
+print(iris[c(2, 5, 4, 10, 3, 25), c(1, 5, 3, 2, 5, 5, 5)])  
+                                
+```
+
+Now we can try subsetting specific values from a column.
+```{r}
+iris$Sepal.Length[iris$Sepal.Length > 5]      
+# Here we are asking for all values that are greater than 5 in the Sepal.Length variable.
+
+howmany <- iris$Sepal.Length > 5
+length(howmany)                             
+# The `length` function returns the amount of values that are above 5 instead of printing them all out. 
+```
+
+
+## Creating a dataframe & tring different summary statistics with subsetting
+### First let's create some variables!
+```{r}
+name <- c("Emily", "Julie", "Stine", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik", "Haghish")
+age <- c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45, NA)
+gender <- c("Female", "Female", "Female", "Male", "Female", "Female", "Male", "Male", "Male", "Male", "Male")
+df <- data.frame(name, age, gender)
+pander(df)
+```
+
+Question: What's the mean age of female participants in our data set? Class PSY9510
+```{r}
+fem_mean <- mean(df[df$gender == "Female", "age"])     
+
+# Here we can subset by gender, first we define the function we want to use, that is mean, then the dataframe, then square brackets to subset, we select our variable of interest with the $ and then specificy what value we are interested in with ==. Then in the second index we specify the variable we will calculate the mean with. 
+```
+
+The analysis showed that the mean age of females is `r fem_mean`. **By using ``, we can bring R objects to the text**. 
+
+Now, what's the standard deviation for males' age?
+```{r}
+male_sd <- sd(df[df$gender == "Male", "age"], na.rm = T) 
+
+# Here we follow a similar approach to above, only that we use the sd(), and we have a missing value to control for with na.rm = T. If na.rm = F, then the sd would come back as NA, as R does not know what do with the missing value. 
+```
+The analysis showed that the standard deviation of males' age is `r male_sd`.
+
+
+Now how do we evaluate whether the age of the participants is above 35 or not?
+```{r}
+val <- df$age >= 35           
+
+# We can create a new variable asking for whether the age is above 35 or below.Given the logical operator `>=` we will get a true/false variable.
+                               
+df$age35 <- val               
+
+# Now we can add the values of this object to a new variable directly into the data frame by using $.
+
+pander(df)
+```
+
+# Plotting
+
+TASK create a histogram. We can add figures to R Markdown. Here's a histogram using the `hist` function
+```{r}
+hist(cars$speed)
+```
+
+```{r}
+a <- hist(cars$speed, plot = F)        
+# The default is plot = T, but if you indicate F, you get a full description of what the histogram contains. 
+a
+```
+
+```{r}
+attributes(a)  
+# attributes() returns the class of the object and what it contains. 
+```
+

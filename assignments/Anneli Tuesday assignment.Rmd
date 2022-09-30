@@ -1,0 +1,205 @@
+---
+title: "Tuesday Assignment"
+author: "Anneli Tandberg"
+date: "2022-09-29"
+output: html_document
+---
+```{r}
+library(tidyverse)
+
+```
+
+# About the data
+
+
+### CSV 
+
+CSV files are:
+
+- Comma separated
+ 
+- Most popular data format
+
+- Often what you download online
+
+- Every row ends with a new line
+
+CSV2 is seperated by semicolon instead of comma
+
+R can read several types of data, such as Stata data, Excel data and SPSS data
+
+### RDS and RData data
+
+RDS data is used to save and load a single object
+```{r}
+#saveRDS(object)
+#readRDS(object)
+```
+
+While RData is more confusing and contains more objects
+
+
+### Unlink 
+
+The unlink function deletes files
+```{r}
+#unlink(filename)
+```
+
+
+### Retrieving numbers of rows and columns
+
+Instead of counting, you can let R count for you by using the dim function
+```{r}
+dim(iris)
+```
+Now we know that the Iris dataset has 150 rows and 5 columns
+
+### Knowing the data structure
+
+In the Monday document we used the mean, sd and summary function. Use the str function to know the structure (rather than the statistics) of the data.
+```{r}
+str(iris)
+```
+
+# Loops
+
+Loops are used to repeat a task a specific number of times. Use the function for(x in y) to create a loop.
+
+```{r}
+x <- c(10,14,13,2,9)
+
+for(rcourse in x){
+print(rcourse)
+}
+```
+or
+```{r}
+for (i in 1:10)
+{
+  print(paste(i,"haghish"))
+} 
+```
+# If/Else function
+The if and else function tells R what to do if the first condition (if) is not met (else).
+```{r}
+if (is.numeric(iris$Species)) {
+  mean(iris$Species)
+} else {
+  str(iris$Species)
+}
+```
+Species is not numeric, therefore R instead did the str function and showed the data structure
+
+```{r}
+if (is.numeric(iris$Petal.Length)) {
+  mean(iris$Petal.Length)
+} else {
+  str(iris$Petal.Length)
+}
+```
+R calculated the mean because petal length is a numeric variable, and it did not move on to the "else" function
+
+### Subsetting
+
+The subset function selects some variables or observations and creates a new data frame based on what conditions and variables you select. Here we only want the species, petal width and length column. For the species column, we only want the type virginica.
+```{r}
+print(head(subset(iris, Species == "virginica", select = c(Petal.Width, Species, Petal.Length))))
+
+```
+#### Subsetting all but some variables
+
+The C function can be used to select all but some columns. Use minus to exclude one column, use c to exclude more. 
+```{r}
+print(tail(iris))
+
+#All but the species
+print(tail(subset(iris, select = -Species)))
+
+#All but the species and petal length
+print(tail(subset(iris, select = - c(Species, Petal.Length))))
+
+
+```
+
+# Dealing with NA
+
+You can check if there are NAs in by using the is.na function. It can create a very long list if the dataset is huge...
+
+```{r}
+d <- c(4,3,1,3,NA,9,1, NA, 10, NA)
+is.na(d)
+```
+Calculating the mean without removing NAs is catastrophic
+```{r}
+mean(d)
+```
+
+
+The na.rm allows you to tell R to remove the NAs. Because na.rm is a logical (true/false) argument, we write "TRUE"
+
+```{r}
+mean(d, na.rm=TRUE)
+```
+
+If you want to check how many NAs are in a dataset, use the sum function
+```{r}
+sum(is.na(d))
+```
+R tells us that there are 3 NAs in the object "d"
+
+If you want to check how many NAs are in a specific variable in a dataset, use$ to specify that  variable
+```{r}
+sum(is.na(iris$Species))
+```
+
+There are no NAs in the Species column in the Iris dataset
+
+
+```{r}
+# Making plots
+```
+
+You can make plots by using the plot function and selecting the variables for the x and y axis
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+# Character vectors
+
+I think character vectors are vectors (sequences of objects of the same type) that only consists of letters. Haghish says they are tricky. 
+
+```{r}
+character_vector1 <- c("a", "b", "c")
+character_vector1
+character_vector2 <- c(letters)
+character_vector2
+character_vector3 <- c("Freia melkesjokolade")
+```
+In the Freia melkesjokolade, R doesn't see "Freia" and "Melkesjokolade" as seperate such as we do, but as a part of one thing. 
+
+To seperate "Freia" and "Melkesjokolade" we can use substr function. But then you need to count the letters.
+
+```{r}
+substr("Freia melkesjokolade", start=1, stop=5)
+substr("Freia melkesjokolade", start=6, stop=20)
+```
+
+It's probably easier to just tell R to split when it detects a blank space with the strsplit function
+```{r}
+strsplit(x="Freia melkesjokolade", split = " ")
+```
+
+If you are curious about how many characters something contains, feel free to check with the nchar function
+```{r}
+nchar(character_vector3)
+nchar(character_vector2)
+```
+
+character_vector2 got 1 1 1 1 and so on because each letter of the alphabet contains... you guessed it, one letter. And character_vector3 got 20 letters, because the two words combined (which R sees as a single unit) contains 20 letters
+
+The which functions asks R to tell which one of the units that fulfill the condition(s)
+```{r}
+which(LETTERS=="F")
+```
+R tells us that the 6th letter of the alphabet = F

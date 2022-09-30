@@ -1,0 +1,125 @@
+---
+title: "R-kurs day 1"
+author: "Niklas Karlsen"
+date: "2022-09-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+Sys.setenv(LANG = "no_NB.UTF-8")            # for æ,ø og å. Kilde: https://stackoverflow.com/questions/16347731/how-to-change-the-locale-of-r
+
+library(pander)
+
+```
+
+## R Markdown
+
+# H1
+
+Heading 1
+===============================================================
+
+```{r eval=FALSE}                           # eval=FALSE; ikke kjør kode
+print("hello world")
+```
+
+This line prints `hello world`.
+
+## H2
+
+Heading 2
+---------------------------------------------------------------
+
+```{r}
+x <- 1:10                                   # x <- c(1:10)
+x[(x>8 | x<5)]                              # subsetting
+```
+
+The first row creates a vector with values from 1 to 10.  
+The second row then selects the values from the vector we created that are below 5 or above 8.  
+The results are shown after ## 
+
+### H3
+
+A list
+
+- punkt 1
+- punkt 2
+  - punkt 2.1
+  
+1. punkt 1
+2. punkt 2
+    - punkt 2.1
+    
+    
+Lage tabeller
+-----------------------------------------------------------
+
+Hentet fra https://www.tablesgenerator.com/markdown_tables
+
+| punkt 1  |  punkt 2 |
+|---|---|
+| 1  |  1 |
+| 2  |  2 |
+| 3  |  3 |
+| 4  |  3 |
+
+Eller bruke pakken `pander` til å lage tabeller  
+Her henter jeg data fra `cars` datasettet
+
+### CARS
+
+```{r echo=FALSE}                               # echo=FALSE, ikke vis koden, bare kjøring
+library("pander")
+data(cars)
+pander(head(cars))                              # de første 6
+#pander(cars)
+```
+
+### IRIS
+
+```{r echo=FALSE}
+data(iris)
+pander(tail(iris, n=4))                          # de siste 4
+```
+
+Creating a dataset
+------------------
+
+### Creating tables with pander
+
+```{r}
+#data.frame(iris)                                  # gjør om til datatabell (frame)? kan brukes til å sette sammen values til data? 
+subset <- iris[10:15,1:5]
+print(subset)
+pander(subset)                                     # prettyprint
+pander(subset[c(1, 3, 6),])                        # plukk ut rad 1, 3 og 6
+```
+
+### creating a dataframe
+
+```{r}
+names <- c('Per','Ole','Kari')
+age <- c(10,20,30)
+gender <- c('male','male','female')
+personer <- data.frame(names, age, gender)          # gjør om til dataframe (Tabell)
+pander(personer)
+```
+
+Hva er gjennomsnittsalder for menn?
+
+```{r}
+personer[personer$gender=="male","age", drop=FALSE]     # drop=FALSE betyr: ikke gjør om til vektor, behold kolonnestruktur
+gjennomsnitt <- mean(personer[personer$gender=="male","age"])
+```
+
+Gjennomsnittet ble `r gjennomsnitt`
+
+```{r}
+personer$"over35" <- personer$age>20           # personer$age>20 er en booleansk vektor
+pander(personer)                               # vi bruker pander() for prettyprint
+# hist(personer$"over35")
+```
+
+Histogram: `hist(a)`                          # a er en vektor

@@ -1,0 +1,152 @@
+---
+title: "First lecture, notes and tests"
+author: "Steffen"
+date: "2022-09-26"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+2+2 #Simple testing of R as a calculator.
+print (2+2) # Using the print fuunction to express the same sum.
+
+```
+
+Testing optional approaches for writing a header, through the number of hashtags in advance, or the use of equalsigns or minus signs below.
+
+# Heading 1
+Heading 1
+=========
+### Heading 1
+Heading 2
+---------
+
+
+
+```{r}
+TF<-c(TRUE,TRUE,TRUE,FALSE,FALSE,FALSE) #Creating a TRUE/FALSE vector, with 6 elements.
+length(TF) #The function "length()" returns the number of elements in the object that is investigated.
+sum(TF) #The function "sum()" returns the sum of the elements in the vector. If the vector is TRUE/FALse, TRUE is assigned the value 1 and FALSE is assigned 0, the TF vector therefore sums up to 3.
+
+
+```
+
+
+
+```{r}
+
+assign(x="A",value=10) # The "assign()" function is used to assign values to given chosen variables, here the constant "A" is assigned the value 10.
+x<-c(1:10) #Here "x" is defined as a vector containing 10 elements, each of the numbers from 1 to 10.
+
+
+A #Testing the assigned value, answer: 10.
+A<20 #A logical test, checking if the value of "A" iis less than 20, which is TRUE.
+A>20 #Logical test checking if "A" the alue of "A" is more than 20, which is FALSE.
+
+```
+
+
+```{r}
+TF==1:6 #Having defined TF as the 6 element vector above, this test checks which of the elements correspond to the number of the increasing sequence from 1 to 6, thus, this will only be correct for the first element, as the first one was TRUE. 
+
+TF==c(1,1,1,0,0,1) #An optional test, where the logical values corresponds to 5 out of the 6 elements in the vector "TF"
+sum(TF==c(1,1,1,0,0,1)) #An easy summary of the test above, showing that since 5 out of the six corresponds to the correct values, this will sum to 5.
+
+
+1+TRUE #A quick test showing how R interprets "TRUE", this equals 2.
+6*FALSE #A quick test for the numeric value of "FALSE", this equals 0.
+
+x[(x>8)] #As x was defined above, this operation extracts the elements in x which is above 8.
+x[(x<5)] #As x was defined above, this operation extracts the elements in x which is below 5.
+x[(x>8) | (x<5)] #Lists the subsections/elements of x below 5 and above 8, using the "OR" operator.
+x[(x>8) & (x<5)] #This equals zero (integer(0)), as there are no elements in x which a re both below 5 and above 8.
+x[(x>5) & (x<5)] #Still equals zero, as number 5 is not an element under consideration.
+x[(x>=5) & (x<=5)] #This equals 5, as we are now including 5 in both "compartments".
+
+#getwd() #The function which returns the current working directory that is being used.
+#setwd() #THe funciton which allows you to set the current working directory.
+
+library(pander) #Imports the library "pander"
+pander(cars) #Extracts the cars data from the pander library.
+
+```
+
+
+Testing writning a table in R, this through the convenient solution of using the website: #https://www.tablesgenerator.com/markdown_tables
+
+The first line has been printed in **bold**, and the first column has been printed in _italic_; yielding cell (2,1) both bolded and italicized.
+
+
+| **wfawf** | _**2**_   | **234** | **123**   |   |
+|-------|-----|-----|-------|---|
+| sdqsd | _sdq_ | sqd | daasd |   |
+|       |     |     |       |   |
+|       |     |     |       |   |
+
+
+Creating a dataset
+===================
+
+Re create data.frame 
+
+
+Let print all the English letters in R. It's already defined in R so we don't not have to define them individually.
+
+```{r}
+LETTERS #Printing all the lettres in the English alphabet.
+
+```
+
+Subsetting data in R
+=========================
+
+```{r}
+data(iris) #Importing the dataset "iris".
+View(iris) #Viewing the dataset "iris".
+print(iris[12:15,]) #printing a subset of iris, that is, the copntents from rows 12 to 15, and printing all the columns.
+print(iris[12:15,2:4]) #printing a subset of iris, that is, the components from rows 12 to 15, but only the second to fourth column.
+
+pander(iris[12:15,]) #Printing the same rows in iris, only in the "pander format"  .
+pander(iris[c(1,3,9,30,6,3,3),2:4]) #Specifying the printing again, specifying rows, and columns, and in the printing, if rows are repeated, they are given subscripts.
+
+```
+
+```{r}
+for (i in iris[1:5,]){ #A recurring for loop, going through the first 5 elements in the iris dataset, printing each element in each row in a column, before repeating the procedure for the second row creating a new column, essentially changing rows and columns for the first five rows, with the listed levels at the end.
+  print(i)
+}
+```
+
+```{r}
+name<-c("Emely","Julie","Stina","Eirik","Nadie","Sara","Ole","Anders","Nikles","Fredrik","Haghish") #Creating a vector with the names of a subset of the students in PSY9510.
+age<-c(27,25,31,26,31,22,27,37,44,45,NA) #Creating a vector with the corresponding ages of the students/lecturer in PSY9510, the lecturer forgot his own age, therefore set it to "NA".
+gender<-c("female","female","female","male","female","female","male","male","male","male","male") #A vector with the corresponding sexes of the students in PSY9510.
+df<-data.frame(name,age,gender) #Defining a dataframe for the vectors just generated.
+pander(df) #Printing the generated data.frame in pander format.
+```
+Lets assign the mean to an R object
+```{r}
+print(femmean<-mean(df[df$gender=="female","age"])) #Printing the mean from a subset of the df data.frame, generating the mean if the age of the female students.
+femmean<-mean(df[df$gender=="female","age"]) #Defining a new variable with the same mean as calculated above.
+```
+
+The analysis showed that the mean age of females in this dataset is 'r femmean' 
+
+```{r}
+val <- df$age >= 35 #Defining a variable which test the df dataframe for students equal or above the age of 35.
+print(val) #Prints the conclusion from the test above. Due to the NA age of the lecturer, we cannot use the sum function for the easy count of the number of students of age below or equal to 35.
+```
+
+We can add figures to R-markdown, here I will add a histogram using the "Hist" function.
+```{r}
+hist(cars$speed) #Plots a histogram of the data imported above. 
+```
+

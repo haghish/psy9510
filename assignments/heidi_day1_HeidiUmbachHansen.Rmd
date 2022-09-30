@@ -1,0 +1,98 @@
+---
+title: "day1 - Heidi Umbach Hansen"
+output: html_document
+date: '2022-09-26'
+---
+
+```{r, warning=FALSE}
+library(rmarkdown)
+library(knitr)
+```
+
+# The basics
+
+## Accessing help pages
+
+R have very handy help pages, which can be accessed in the following ways:
+
+```{r}
+?help
+help("mean")
+?mean
+?citation
+```
+
+## Assigning values
+
+```{r}
+A <- 2
+B <- 5
+x <- c(1:10)
+```
+
+# R markdown
+
+Various ways to creating headings, e.g. with \# (number of \# creates subheadings), = or -. NB! When using = the next line must be empty.
+
+# R markdown
+
+## Inline formatting
+
+*italic* *italic*   
+**bold** __bold__   
+sub~s~cript super^s^cript  
+inline `code`  
+ 
+
+## Adding chunks
+
+Warning=FALSE will not display the messages etc
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)  #loading the tidyverse package
+vector_test <- c(10,20,30,40,50)  #Creating a vector
+assign(x="A", value = 10)
+print(A)
+```
+
+## Making comments
+The following will not be rendered
+<!--
+An interesting comment
+-->
+
+## Diverse
+
+I Rmarkdown så er environment tomt - det er et slags lokalt environment som blir generert når man trykker "Knit". Det som gjør at det blir reproducable - siden alle objekter må lages i RMarkdown fra scratch.
+
+Er ikke mulig å bytte mellom lokalt og globalt miljø
+
+## Tables 
+Can be generated online: <https://www.tablesgenerator.com/markdown_tables>
+
+Or use pander
+
+```{r}
+library(pander)
+```
+
+# Working with dynamic r tables
+
+Using the package 'pander' is a smarter way to work with dynamic tables
+
+```{r}
+data(cars)
+pander(cars)
+pander(head(cars, n=3L))
+```
+
+NB! Ved å skrive eks. 6L istedenfor 6 (begge er integer), så sier man at det ikke er noen desimaler, og er mer minnebesparende (og kan dermed gå fortere).
+
+# Task
+```{r}
+data(cars)
+hist(cars$speed)
+help(hist)
+```
+
+

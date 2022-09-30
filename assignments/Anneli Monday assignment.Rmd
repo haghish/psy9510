@@ -1,0 +1,219 @@
+---
+title: "Monday Assignment"
+output: html_document
+author: "Anneli Tandberg"
+date: "2022-09-28"
+---
+
+# Preparation, loading and getting help
+
+### Working Directory
+
+Using the setwd function will set your working directory to the specified folder. The working directory allows R to access data in that folder directly, without needing to specify a path.
+
+```{r}
+#setwd("~/Desktop/R-kurs")
+```
+
+If you don't set your working directory, you will have to write the complete path for R to find the object you're trying to load
+```{r}
+#a <- ("~/Desktop/R-kurs/datafile.RDS")
+```
+
+Instead of just writing the file name that is in that working directory
+```{r}
+#b <- "datafile.RDS"
+```
+
+### Packages
+
+Packages are pre-made functions to be used. One can download a package for R by simply using the install.packages function. You have to load the package for each R script with the library function
+```{r}
+#install.packages(tidyverse)
+library(tidyverse)
+```
+
+
+### Help function
+
+The help function sends you directly to the help page for any function in R
+
+```{r}
+help(help)
+help("install.packages")
+```
+
+The help functions are not always very useful, so you should also use Stackoverflow or google
+
+### Assigning values
+
+The assign function allows you assign something to an object. An easier way of doing this is to use the arrow symbol
+
+```{r}
+assign("c", 3)
+c <- 3
+```
+
+### Viewing files
+
+To view a file, use the view function. 
+
+```{r}
+view(iris)
+```
+
+Iris is an already existing dataset that comes with R
+
+### Loading and removing objects
+
+In order to load your data, you can use the read function. What comes after depends on the file type. Here we read a CSV-file
+```{r}
+#read.csv("~/Desktop/datafiles/fil1.csv")
+
+```
+
+If you wish to remove something from your environment, you can use the rm function
+```{r}
+rm(c)
+```
+
+# Object types
+
+There are several types of objects in R. One such object is a vector. Vectors are sequences of units (such as numbers for height) that are of the same type (no mixing height and name). Use the c function to combine the elements
+
+```{r}
+vector_example <- c(9, 11, 4, 22, 85)
+```
+
+To get a sequence of numbers or letters for a vector, use the : to specify the range
+```{r}
+vector_example <- 1:4
+```
+
+
+One can check logical statements, which are either TRUE or FALSE
+```{r}
+vector_example > 3
+vector_example < 3
+```
+
+
+Objects can be of, for example, type interger (whole numbers) or "strings", which are letters or words. R recognizes that something is a string and not a function by using " "
+```{r}
+d <- c("male", "female", "male", "male")
+```
+
+To check the type of an object, use the type of function
+```{r}
+typeof(vector_example)
+```
+
+To check the length of an object, use the length function
+```{r}
+length(vector_example)
+```
+
+To get hold of a single value in a data set, use the square brackets []
+```{r}
+d[3]
+```
+
+
+# Creating dataframes
+
+When you have the variables you need, it's useful to combine them to one table consisting of rows and columns. First we make some fake data
+```{r}
+breed <- c("german shepherd", "pomerian", "dalmantinian", "poodle", "golden retriever", "border collie") 
+age <- c(2, 3, 11, 9, 2, 6)
+lovely <- c("yes", "yes", "yes", "yes", "yes", "yes")
+sex <- c(0, 0, 1, 1, 0, 0)
+```
+
+Now we combine these lonely variables to a single data frame with the data.frame function
+```{r}
+dogs <- data.frame(breed, age, lovely, sex)
+```
+
+Let's get an overview of this beauty with the summary function
+```{r}
+summary(dogs)
+```
+I want the mean age for only the male (0) dogs. Use the mean function and [] to grab hold of something specific, and $ to tell R that it's a variable in a specific dataset. Double equal sign means that the object must be exactly equal to something, in this case 0, which is the code for male
+```{r}
+ mean(dogs[dogs$sex=="0","age"])
+```
+
+I want to standard deviation for the age of female dogs. I use the sd function
+```{r}
+sd(dogs[dogs$sex=="1","age"])
+```
+
+# Creating visuals
+
+### Tables
+
+Creating tables in R is difficult and tricky. There is an online tool that can help: [helpful link](https://www.tablesgenerator.com/markdown_tables)
+
+|   | A  | B | C |   |
+|---|----|---|---|---|
+| D | 1  | 2 | 3 |   |
+| E | 2  | 0 | 4 |   |
+| F | 11 | 4 | 1 |   |
+
+Why don't the letters align? I don't know.
+
+The pander package is better for making tables in R. I'm going to use the cars data set which is already in R, but it's long and will give us a terrible table. Use the head or tail function to specify that you only want the start (n = how many) or the end of the data set as a table
+
+```{r}
+library(pander)
+data(cars)
+pander(head(cars, n=5))
+pander(tail(cars, n=5))
+```
+
+### Histogram
+
+To create a histogram, use the hist function
+```{r}
+hist(dogs$age)
+```
+
+
+
+
+# R-markdown
+
+R-markdown lets you combine free text and R-functions to a neat html file. Use # for a big header, and the more # you use, the smaller the header
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+Use the [] followed by () to create a [fancy link](https://www.nasa.gov/)
+
+Use the ALT + CMD + I to make a field where you can use R normally, which will also show in the final product
+```{r}
+this_is_a_R_field <- TRUE
+```
+
+# R as a calculator
+
+Not the most shocking, but R can be used as a calculator
+```{r}
+e <- 4
+f <- 10
+e+f
+e*f
+e/(f*10)
+```
+
+# Logical operators
+
+< less than
+<= less than or equal to
+ > more than 
+ >= more than or equal to
+!= not equal to
+

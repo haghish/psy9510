@@ -1,0 +1,290 @@
+---
+title: "Day 2"
+author: "E. G. Blakstad"
+date: '2022-09-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+For Loops
+===============================
+
+For loops can be used to repeat an action/function several times. It is especially useful for performing a function on big datasets 
+
+```{r}
+
+# a for loop 
+for(b in 1:5){print(b)}
+
+S <- c("some", "character", "for", "the", "example")
+
+# 
+for(b in 1:5) 
+  {(print(S[b]))}
+
+
+# the variable gets assigned inside the loop so you can call it anything 
+for(indiancurry in S) {print(indiancurry)}      
+
+```
+
+The variable "indiancurry" or "b" is assigned insided the loop and therefore does not need to be assigned beforehand.  
+
+
+Working with data
+===============================
+
+
+SaveRDS saves data into a RDS-file 
+RDS is used for saving and loading a single object
+
+
+```{r}
+help(readRDS)
+help(saveRDS)
+
+data(iris)
+saveRDS(iris, "testdata.RDS")
+```
+
+
+
+Cleaning workspace
+-----------------------
+
+```{r}
+ls()
+help(ls)
+
+rm()
+```
+
+ls() lists the variables and dataframes in the global environment 
+
+rm(variable) removes specific objects from the global environment
+
+
+CSV data format
+--------------------------
+
+read.csv reads the csv file into r. It can be read directly from the web if we have the URL. Unlink removes files from wd
+
+```{r}
+help("read.csv")
+data(iris)
+
+write.csv(iris, file = "iristest.csv")
+help("unlink")
+
+```
+
+Subsetting 
+===================================
+
+The `subset`function returns a subset of vectors, matrices or data frames which meet conditions 
+
+
+```{r}
+assign(x = "df2", value = "testdata.RDS")
+
+
+data(airquality)
+dim(airquality)
+str(airquality)
+help(subset)
+
+subset(airquality, Temp > 80, select = c(Ozone, Temp))
+subset(airquality, Day == 1, select = -Temp)
+subset(airquality, select = Ozone:Wind)
+
+subset(airquality, select = -c(Temp, Ozone))
+
+help(colnames)
+```
+
+Stata and spss data
+============================
+
+```{r}
+
+library(readstata13)
+library(foreign)
+library(haven)
+
+help("read.spss")
+
+help("read.dta13")
+
+is.factor(airquality$temp)
+class(airquality$temp)
+```
+
+use.value.labels
+
+factor is a categorical/nominal valuable
+
+
+
+Reading Excel sheets
+------------------------
+
+tidyverse
+
+
+read_excel() reads both xls and xlsx files and detects the format from the extension.
+
+List the sheet names with excel_sheets().
+
+Specify a worksheet by name or number.
+`read_excel(xlsx_example, sheet = "chickwts")`
+
+There are various ways to control which cells are read. You can even specify the sheet here, if providing an Excel-style cell range.
+`read_excel(xlsx_example, n_max = 3)`
+
+If NAs are represented by something other than blank cells, set the na argument.
+`read_excel(xlsx_example, na = "setosa")`
+
+
+```{r}
+help(summary)
+```
+
+
+NULL = not defined
+
+
+If loops
+===============
+
+If loops let you perform a specific action if certain conditions are met. 
+
+```{r}
+if(is.numeric(iris$Species)) {
+  mean(iris$Species) 
+} else {
+    str(iris$species)
+}
+
+
+
+```
+
+Sum summarize the selected values - in this case, the nas in the attenu -> station column
+
+
+Scatter plot
+===============
+
+```{r}
+cars$dist
+
+plot(cars$speed, cars$dist)
+
+
+```
+
+Character vector
+====================================================================================================
+
+
+
+substring. 
+
+```{r}
+help(paste)
+
+
+help(cat)
+
+help("stringr")
+?substr
+
+fn <- "tofu"
+nchar(fn)
+substr(fn, start= 1, stop=2)
+
+?strsplit
+
+strsplit("cooked tofu", split = " ")
+
+state.name
+
+length(state.name)
+
+substring(state.name, c(1, 5, 9), c(3, 7, 12)) # 
+
+
+```
+
+Cat - 
+"\n" - end of the line 
+
+
+```{r}
+LETTERS == "R" # find if R is true in the dataset
+which(LETTERS == "R") # find the space of R in the dataset 
+
+which(ll <- c(T, F, T, NA, F, F, T)) # which finds the index of values/elements in the vector that are true 
+
+```
+
+stringr
+----------------------------
+
+Part of tidyverse. Verbs to learn:
+str_length() Gives how many characters there are
+str_detect() Detect the presence or absence of a pattern in a string
+str_count() Count the number of matches in a string 
+str_subset() Extract and replace substrings from a character vector
+str_locate() Locate the positions of patterns in a string
+str_extract() Extract matching patterns from a string
+str_match() Extract matched groups from a string
+str_replace Replaced matched patterns in a string 
+str_c - This function joins two or more vectors element-wise into a single character vector
+
+```{r}
+library(stringr)
+
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+str_length(x)
+
+str_sub(x, 1, 2)
+
+str_c(x, collapse = NULL)
+
+```
+
+
+
+regexplain - google it 
+
+
+Summary
+==============
+
+
+Today we learned how to create for and if loops, scatterplots. We also learnt more a bout subsetting and creating character vectors. Finally we also spent some time learning how to read a CSV file into r, and different kinds of files, such as stata, spss, and excel.

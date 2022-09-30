@@ -1,0 +1,208 @@
+---
+title: "Day 1 - Session 2"
+output:
+  html_document: default
+  word_document: default
+date: '2022-09-26'
+---
+Intro to RMarkdown 
+=======================================================================================================================
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+You can create headings by having either multiple = or - under the line you want as heading, or using one or multiple hashes. Amount of hashes defines the size of the header
+
+# Heading 1
+
+Heading 2 
+--------------------------------------------------------------------------------------------------------------------------
+
+### Heading 3
+
+#### Heading 4
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+# Monday Morning
+
+We learned about vectors and so. 
+You can create "chunks" to write R code by pressing cmd +  option + i. You write the code between the accents
+```{r message=FALSE}
+print("hello World")
+library(tidyverse) #Load tidyverse package
+
+assign(x = "A", value =10)
+A
+print(10, 20, 30)
+print(c(10, 20, 30, "psy9510"))
+B <- c(1, 2, 3, 4)
+S <- c("hi", "hello")
+X <- (1:10)
+
+x <- c(1:10)
+x
+x[(x>8) | (x<5)]
+
+#True or false are boolean operator which can either be true or false
+TF <-c(TRUE, TRUE, T, FALSE, FALSE, F)
+TF
+typeof((TF)) #Type of gives us the data type of the variable
+length(TF) #
+```
+Creating a list
+---------------------------------------------------------------------------------
+
+- List 1
+- List 2
+  - List 3
+  - List 4
+
+If you want to create a table you can use https://www.tablesgenerator.com/markdown_tables to generate a table to copy into RMarkdown. 
+
+Or you can use the package Pander 
+
+| ID 	| Hat 	| Glasses 	|
+|----	|-----	|---------	|
+| 1  	| 1   	| 0       	|
+| 2  	| 0   	| 0       	|
+| 3  	| 1   	| 1       	|
+
+
+Working with dynamic R tables
+========================================================================================================================
+
+
+As you see, Rmarkdown's tables are stupid and we want a smarter way for working with dynamic tables. For this we use `pander` R package. 
+
+```{r}
+library(pander)
+
+data(cars)
+pander(head(cars))
+pander(tail(cars, n = 3L)) #L makes it an integer, we can simply remove it. It does not change anything
+
+```
+
+
+```{r}
+data(iris)
+pander(iris, n = 4)
+
+```
+
+
+Creating a dataset
+=========================================================================================================================
+
+We create a data frame using the `data.frame`function
+
+```{r}
+help("data.frame")
+
+```
+
+Let's print all the english letteres. it's defined in R automatically and we do not need to define it ourselves
+
+```{r}
+
+LETTERS[1:3]
+```
+
+Subsetting data in R
+=====================================================================================================================================
+
+```{r}
+data(iris)
+print(iris[10:12,])
+
+```
+
+select the rows 12:14 and columns 2:5
+
+
+```{r}
+
+pander(iris[12:14, 2:5])
+```
+You can also be very selective in indexing 
+
+```{r}
+pander(iris[c(10, 13, 33, 1, 1), c(5, 2, 3, 2, 5, 5, 5, 1, 3)])
+
+```
+
+Creating a date.frame
+==================================================================================================================
+
+```{r}
+name <- c("Emily", "Julie", "Stine", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik", "Hagish")
+age <- c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45, NA)
+gender <- c("female", "female","female", "male", "female", "female", "male", "male", "male", "male", "male")
+df <- data.frame(name, age, gender)
+pander(df)
+```
+
+Question: What is the mean of age for female participants of the class PSY9510
+
+```{r}
+print(df[df$gender == "female","age"])
+
+mean(df[df$gender == "female","age"])
+
+```
+
+Lets assign the mean to an R object
+
+```{r}
+femmean <- mean(df[df$gender == "female","age"])
+```
+
+The analysis showed that the mean age of females in this dataset is 
+`r femmean`. **This way we can bring R objects inside of text**
+
+Let's calculate the standard deviation for male's age:
+
+```{r}
+#help(sd)
+sd(df[df$gender == "male", "age"], na.rm = TRUE)
+
+```
+
+
+How can I evaluate if the age of the participants is abaove or equal to 35 or not
+
+```{r}
+val <- df$age >= 35
+
+#now I define a new variable
+df$age35 <- val
+
+pander(df)
+```
+
+
+
+We can add figures to R markdown. Here I will add a historgram using the `hist`function. 
+```{r}
+hist(cars$speed)
+
+```
+
+
+

@@ -1,0 +1,272 @@
+---
+title: "Day 1 - R-course - Sara"
+author: "Sara Berger Marjanovic"
+date: "2022-09-28"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+# R and RStudio
+
+R is an object-oriented language
+
+The code is typed in the consule
+The global environment is where your data, functions and objects are stored.
+
+A function can be compared to a verb - it is what is being done to the object inside the parantecies
+
+# Seeking help
+
+Knowing how to seek help is a big part of programming! No one have ALL the answers!
+Action plan:
+
+1. Google it!
+
+2. Use ´help()´-function in R to figure out what arguments a function take. 
+
+3. Describe you problem as clear as possible an put it on to StackOverflow
+
+# Preperations
+
+## Specifying working directory
+
+When we set a working directory we tell R in what folder we are working in. 
+We can set our working directory by using the function:
+
+```{r}
+#setwd(/Users/saramarjanovic/OneDrive - Universitetet i Oslo)
+```
+
+I have know set my working directory to my One Drive, in no specific folder. 
+
+## Installing and loading packages
+
+In R we use the function:
+
+```{r}
+#install.packages("nameofpackage")
+```
+in order to install open source packages in R.
+ 
+A very useful and well known collection of packages is the Tidyverse.
+
+In order to load the package we use the function:
+
+```{r}
+library(tidyverse)
+```
+
+Here I have loaded the Tidyverse-package and I can now use Tidyverse-functions!
+
+# The ´help-function´
+
+The help-function is a tool to read the help files of different packages or functions in R
+
+We can even use the help-function to learn about the help-function:
+
+```{r}
+help(help)
+```
+
+Description from help file on ´help()´
+"Help is the primary interface to the help systems."
+The help files can be confusing, but are helpful sometimes. 
+
+# R as a calculator
+
+We can use R as a calculator:
+
+```{r}
+2+2
+2-1
+2*3
+4/3
+```
+
+R follows the order of arithmetic operations, which is important to remember if we want to perform more complex mathematic operations. 
+
+# Assigning values
+
+```{r}
+help(assign)
+```
+
+Description:
+Assign a value to a name in an environment.
+
+We can assign values so that they show up on our global environment in different ways:
+
+By using the `assign`function
+
+```{r}
+assign("a", 20)
+```
+
+or by using the `= ` sign or the `<--`sign. 
+
+Like this:
+
+```{r}
+b = 10
+d <- 15
+```
+
+# Vectors
+
+A vector is a one dimensional object with a train of elements. A vector is an anatomical object, meaning every element in that object needs to be of the same type!
+We specify to R that our object is a vector by using the keyword ´c´ and seperate each element with a comma, like this:
+
+```{r}
+my_vector=c(10,20,30)
+class(my_vector)
+typeof(my_vector)
+```
+
+my_vector is a numerical vector, because all the elements are numbers.
+
+If we include a string as an element in the vector, the vector will become a character vector. 
+
+```{r}
+my_chr_vector = c(10,20,30, "R is diffcult")
+typeof(my_chr_vector)
+class(my_chr_vector)
+```
+
+We can also assign vectors with the assign-function like this:
+
+```{r}
+assign("another_vector", c(10,20,30) )
+```
+
+The ´:´-siggn tells R that we want every value from x:y. We can use this when assigning vectors, instead of writing every number from x to y, like this:
+
+```{r}
+my_easier_vector = c(1:10)
+```
+
+In this case we could also write it without the c-keyword, the output will be the same.
+
+```{r}
+my_even_easier_vector = 1:10
+```
+
+# Indexing and subsetting
+
+We can subset by using implying the position (index) we would like to subset from inside the square bracket, in this instance after our vector, like this:
+
+```{r}
+ex_vector = c(3, 1, 4, 1, 5, 9, 2, 6, 5)
+ex_vector[4]
+```
+
+We can also subset different intervals by using and (&)/or(|) statements, like this:
+
+```{r}
+ex_vector[(ex_vector>8) | (ex_vector<5)] 
+ex_vector[2&6]
+```
+
+From the first example we will expect the output of the elements that are over 8 and under 5.
+
+For the second example we will expect the output of the element on the second position and the sixth position. 
+
+NB! R counts form 1, unlike many other languages that counts from 0.
+
+# Boolean data types and logical operators
+
+## Boolean variables
+
+Boolean variables only take TRUE or FALSE statements
+
+```{r}
+TF = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+typeof(TF)
+class(TF)
+length(TF)
+```
+
+       
+## Logical operators
+
+Logical operators return TRUE or FALSE:
+
+Greater than (>)
+Less than (<)
+Greater than or equal to (>=)
+Less than or equal to (<=)
+Equal to (==)
+Not equal to (!=)
+
+Example:
+
+```{r}
+my_variable = 10
+my_variable > 20  #will give FALSE because 10 is less than 20.
+
+my_variable != 20 #will give TRUE because 10 is not equal to 20
+
+```
+
+# Data frames
+
+You can create a data frame by using the data.frame-function, importing a file, or by using one of the data frames already avilable in R. 
+
+## Creating a data frame
+
+Data frames are two-dimensional objects. This means we can combine two one-dimensional objects (eg. vectors) into a data frame, like this:
+
+```{r}
+#vector 1
+TV_shows = c("Game of Thrones", "Luther", "Orange is the New Black" )
+
+#vector 2
+good = c(TRUE, TRUE, FALSE) #pls don't fail me if you like Orange is the New Black 
+
+#vector 3
+fantasy = c("yes", "no", "no")
+
+
+my_personal_opinion = data.frame(TV_shows, good, fantasy)
+```
+
+We can index data frames by using the dollar sign, like this:
+
+```{r}
+my_personal_opinion[my_personal_opinion$good==TRUE] #what did I do wrong here? It's only supposed to show the good once :/
+```
+
+# Creating tables
+
+We can create tables directly in R, but they are kinda ugly. With the ´pander´-package we can create more beautiful tables in RMarkdown!
+
+```{r}
+#install.packages("pander")
+library(pander)
+help("pander")
+```
+
+Let's say I want to make a table with the iris data frame, showing petal length, petal width and species:
+```{r}
+data(iris)
+pander(table(iris$Petal.Length, 
+              iris$Species ))
+
+```
+
+We can also use Markdown Tables Generator to make it even easier:
+[https://www.tablesgenerator.com/markdown_tables] 
+
+# Creating plots
+
+We can create plots in R by using plot-functions.
+The plot-function gives a scatterplot, but you can also specify other blots like barplots, boxplots and histograms. 
+
+Let's make a scatterplot from the iris data frame:
+```{r}
+plot(x=iris$Petal.Length, y=iris$Petal.Width)
+```
+It doesn't make a lot of sense, but it is what it is!
+
+
+

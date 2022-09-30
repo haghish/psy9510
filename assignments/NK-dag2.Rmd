@@ -1,0 +1,65 @@
+---
+title: "R-kurs day 2"
+author: "Niklas Karlsen"
+date: "2022-09-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### Conversion: 
+as.? (`as.character()`, `as.factor()`, ...)  
+
+### Boolean: 
+is.? (`is.character()`, `is.numeric()`, ...)
+
+```{r}
+which(LETTERS == "R")                       # which position does R have?
+```
+
+
+### Loops: 
+looping over columns or rows, and modifying values.
+
+```{r}
+vec <- c(4, 7, 12, 13)
+for (v in vec) {print(is.character(v))}
+```
+
+
+### Different print-functions: 
+`paste()` (converts to character and concatenates), `paste0()`, `cat()` (\n for newline)
+
+### String-manipulations: 
+`substring()` (extract or replace substring), `strsplit()` (split string)
+
+```{r}
+fn <- "tofu"
+nchar(fn)
+substr("cooked tofu", start=8, stop=12)
+strsplit("cooked tofu", " ")
+```
+
+```{r}
+library(stringr)
+x <- c("hei", "cheese", "tofu")
+str_length(x)                                     # length of each word in x
+# str_c(x)
+y <- str_subset(x, "e")                                # selects words that contains "e", uses regular expressions
+```
+
+The following words contain the letter e: 
+
+```{r} 
+print(y)
+```
+
+## References for packages used
+
+```{r} 
+citation("stringr")
+```

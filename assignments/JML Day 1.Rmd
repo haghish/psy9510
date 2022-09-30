@@ -1,0 +1,205 @@
+---
+title: "Day 1"
+author: "J.M. Lengle"
+date: "2022-09-28"
+output: html_document
+---
+
+# **Introduction to statistics in R: 1**
+
+# R as a language
+
+* R is an *object-oriented* programming language
+  + object-oriented: has classes (e.g. dataset, string, matrix, list, +)
+  + an important step to being comfortable working in R is knowing *what* you're working with (i.e. what class)
+ 
+* Like any language, R has grammar that must be followed in order to create meaningful 'sentences'
+  + a string is a collection of text. in order to create a string you use `""`.
+  + a command prompt is a 'verb' for an action you want executed. these verbs are followed by `()`.
+  
+* There is a large online community of R users
+  + Q&A site: Stack Overflow
+  + Find and share codes: GitHub
+  
+Let's get started:
+
+```{r eval=FALSE, echo=TRUE}    
+print("hello World")          #ask R to print a string
+setwd("~/Desktop/my r")       #set your working directory
+getwd                         #shows your current working directory
+source("helloworld.R")        #open a file in R
+install.packages("tidyverse") #install the tidyverse package
+library("tidyverse")          #load the tidyverse library
+help("help")                  #type help(__) to look up help file
+```
+
+# Working in R
+
+* Workspace panes
+  + the top left pane is where you write your code
+  + the bottom left pane, the R console, is where you run your code
+  + the top right pane shows your code history and your "environment"
+    + the environment includes your active data and values/variables/objects
+    + your global environment = the active data and objects that are currently available to you during your session
+
+| R panes 	|  	|
+|---	|---	|
+| code 	| important stuff (data files, variables) 	|
+| results 	| plots, help files, r markdown output 	|
+
+```{r}
+library(pander)             #pander is helpful for generating tables
+data(cars)
+pander(cars)
+```
+
+## Creating data frames
+* Data frames in R have 2 dimensions: rows and columns
+
+```{r}
+help("data.frame")
+name <- c("Emily", "Julie", "Stine", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik", "Haghish")
+age <- c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45, NA)
+gender <- c("female", "female", "female", "male", "female", "female", "male", "male", "male", "male", "male")
+df <- data.frame(name, age, gender)
+pander(df)
+```
+
+## Running calculations
+  + R can be used as a calculator
+  + be clear on what you want by using parentheses cleverly
+  + to create variables, use the `assign()` function
+```{r}
+2+2
+2*5
+1+2*5+1/2
+help("assign")
+assign("A", 10)                    #assign A=10
+A                                  #request value of A
+2+A
+assign("B", 11)
+B
+```
+ 
+  + variables can be single numbers, strings, vectors +
+    + to make a vector, use the `c()`function
+      + type of data: number, character/string
+
+```{r eval=FALSE, echo=TRUE} 
+x <- c(1:10)                      #assign vector 1-10 to x
+x
+TF <- c(TRUE, TRUE, T, FALSE, FALSE, F)
+TF
+```
+  
+  + operators in R
+  
+| Operators 	|
+|---	|
+| + 	|
+| - 	|
+| * 	|
+| / 	|
+| ^ or ** 	|
+
+   + R also makes use of logical operators that produce true (1) or false (0) statements
+   
+
+| Logical operators 	|
+|---	|
+| < 	|
+| <= 	|
+| > 	|
+| >= 	|
+| == 	|
+| != 	|
+| !x 	|
+| x | y 	|
+| x & y 	|
+
+### Subsetting data
+
+* There are multiple ways to subset data
+
+```{r eval=FALSE, echo=TRUE} 
+data(iris)                         #specify data you want to use
+print(iris[10:12,])                #print only observations 10-12
+pander(iris, n=4)                  #print only observation number 4
+View(iris)                         #view the data
+View(iris[10:15,])                 #view only observations 10-15    
+pander(iris[12:14,2:5])            #create a table of observations 12-14,2-5
+iris[c(10,13,33,1,1),c(5,2,3,2)]   #use brackets to create an index of which rows and colums you want to view [index 1(row), index 2(column)]
+View(iris)
+rm(iris)                           #stop working with a data set, or remove  a variable from global environment
+index <- iris$Sepal.Length < 5     #create a variable that represents a train of T/F statements for each observation in the data set concerning whether the value is <5 or not
+                                   #use the $ to specify a column in a data set
+length(index)                      #request length of variable
+data(cars)
+help("head")                       #head function extracts first values of data set
+head(cars)
+head(cars, n=6)                    #specify extract 6 first values
+head(cars, n=6L)                   #L specifies extract integers
+tail(cars)                         #extract last values of data set
+x[(x>8 | x<5)]                     #ask R to list the values of x that are above 8 OR below 5
+dim(cars)                          #retreive or set the dimension of an object
+```
+
+#### Let's do some calculating! woo
+
+```{r}
+print(df[df$gender == "female","age"])      
+mean(df[df$gender == "female","age"])
+                                   #what is the mean age of females in the sample
+femmean <- mean(df[df$gender == "female","age"]) 
+                                   #assign the mean to an R object
+sd(df[df$gender == "male","age"])  #what is the standard deviation of the age of males in the sample
+sd(df[df$gender == "male","age"], na.rm = TRUE)
+malemean <- sd(df[df$gender == "male","age"], na.rm = TRUE) 
+                                   #assign the sd of the mean of male age to variable malemean, and specify removal of missing values (na.rm=TRUE)
+val <- df$age >= 35                #add a T/F variable that assesses whether the observed age of the participant is greater than or equal to 35
+df$age35 <- val
+pander (df)
+hist(cars$speed)                   #generate a histogram of the speed of the cars
+```
+
+# R markdown
+
+* R markdown is a tool for
+   + writing code
+   + documenting code
+   + commenting/explaining code
+ 
+* R markdown
+   + is a form of literate programming: uses human language inside computer programming
+   + accesses and uses the local environment (v. global), and thus provides a clean slate for analyses and actions in R
+   + allows for the transformation of raw data --> reproducible data
+   + can be used for mathematical notation
+ 
+* Some benefits of R markdown are:
+  1. Tests in new environment
+  2. Easy to share outside R
+  3. Produces automatic reports
+  4. Can combine multiple programming languages
+  5. Includes a table of contents
+  6. Can run live analyses
+  
+* To use R markdown:
+    + type human language in open spaces
+    + use 'chunks' to insert R code
+       + create a code chunk with `ctrl+option+i`
+    + press knit to compile document to html, pdf or word document
+
+## Formatting in R markdown
+
+### Tips and tricks
+
+* See R markdown cheatsheet and reference sheet for tips on how to format R markdown documents
+* Some notes:
+  + use #https://www.tablesgenerator.com/markdown_tables# to generate tables
+  + change chunk opening to {r, eval=FALSE, echo=TRUE} if you would like the markdown document to show the code but not the results
+        + setting eval=TRUE will provide results, and echo=FALSE will remove original code
+  + exclude a part of R markdown using < ! -- >
+  
+# Closing
+
+We learned a lot more than this summary, but you know that! *Takk for nå.*

@@ -1,0 +1,237 @@
+---
+title: "Day 2 - Session 1"
+output: html_document
+date: '2022-09-27'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For loops 
+=====================================================================================================================
+
+FOR loop is one of the simpler loops to use in R. 
+
+In a for loop you can define a vector or list to apply a certain function to.
+In this case we define the `var`b(can be any name or word) as a range of 1:5. If we then in the loop print b, we print a range of 1 to 5.
+```{r}
+
+for(b in 1:5){
+  
+  print(b)
+  }
+
+```
+
+
+
+`var`can also be a vector or list of characters
+Using the print function in the for loop then prints all the elements in that list of characters.
+```{r}
+
+S <- c("some", "character", "for", "the", "example")
+
+for (indiancurry in S) {
+  print(indiancurry)
+}
+
+```
+
+
+If `var`is defined as a range it can be used for indexing
+```{r}
+
+
+for (b in 1:5) {
+  print(S[b])
+}
+
+```
+
+
+Reading and saving files
+========================================================================================================================================================
+
+You can use the `saveRDS` function to save data from your session as an RDS-file. 
+```{r}
+
+data(iris)
+saveRDS(iris, "testdata.RDS")
+
+```
+
+You can open RDS files by using the function `readRDS`
+```{r include=FALSE, paged.print=FALSE}
+readRDS("testdata.RDS")
+
+```
+
+
+The function `ls` List Objects, lists all objects in your global environment
+```{r echo=TRUE}
+ls()
+```
+
+And you can use this combined with the `rm` Remove function to remove all objects from your global environment. 
+```{r}
+
+rm(list = ls())
+```
+
+
+CSV
+-----------------------------------------------------------------------------------------------------------------------
+
+You can also read files such as csv files (comma separated values). The function can also be used to read files directly from the internet if given the the URL. The `write.csv` function saves something as a csv file, `read.csv` reads a csv file and unlink deletes a file from the working directory
+```{r}
+data(iris)
+write.csv(iris, file = "iristest.csv")
+read.csv("iristest.csv")
+unlink("iristest.csv")
+```
+
+SPSS
+-----------------------------------------------------------------------------------------------------------------------
+
+You can also read stata data with `read_stata` from the stata13 package or SPSS data with the `read.spss` function from the foreign package. (Also many other options)
+
+```{r}
+#df <- haven::read_sav(file = "airquality.sav")
+#str(df)
+#library(pander)
+#pander(head(df))
+
+```
+
+Excel 
+-----------------------------------------------------------------------------------------------------------------------
+
+The Readxl package from tidyverse has the functions `read_excel` which can be used to read both xls or xlsx based on the file extension of the file itself. You can also use `read_xls` or `read_xlsx`. You can specify `sheet` to decide which sheet/s of the excel file you want to read. You can call `col_names` to decide if the first row should be read as variable names or not. 
+
+
+IF loops 
+=================================================================================================================================================================
+
+```{r}
+if (is.numeric(iris$Species)) {
+  mean(iris$Species)
+ } else  {
+    str(iris$Species)}
+  
+  
+
+
+```
+
+
+Assigning and subsetting
+-----------------------------------------------------------------------------------------------------------------------
+```{r}
+assign(x = "df2", value = "testdata.RDS")
+
+data(airquality) # Loads existing r-data
+View(airquality) #view the dataframe(DF)
+dim(airquality) #Gives the dimensions of the DF
+str(airquality) #Gives the structure of the DF
+```
+
+
+The `subset´ function returns a subset of vector, matrices or data frames based on the conditions you write. 
+```{r}
+subset(airquality, Temp > 80, select = c(Ozone,Temp))
+subset(airquality, Day == 1, select = Temp)
+subset(airquality, select = Ozone:Wind)
+
+subset(airquality, select = -Temp)
+
+```
+
+
+Scatterplot 
+=======================================================================================================================================
+
+```{r}
+cars$dist
+
+plot(cars$speed, cars$dist)
+
+```
+
+
+Character vector
+==========================================================================================================================================
+```{r}
+data("iris")
+
+for (pasta in iris$Sepal.Length) {
+  print(pasta)
+  
+}
+```
+
+Cat outputs while concatenating the representations. It performs less conversion than `print`
+\n - end of line
+
+```{r}
+data("iris")
+
+for (pasta in iris$Sepal.Length) {
+  cat(pasta)
+  
+}
+```
+
+
+substr extracts or replaces substrings in a character vector. This can for example be used to shorten or select just part of a word. 
+`strsplit` can be used to split a character vector into multiple parts. 
+```{r}
+fn <- "coocked tofu soup"
+nchar(fn)
+
+substr(fn, 8,11)
+
+strsplit(fn, split = " ")
+```
+
+The `paste` function can be used to combine character strings together. 
+
+```{r}
+something <- c("hat", "cat", "bat")
+
+paste(c("hat","cat","bat"))
+
+```
+
+
+
+The Which function 
+```{r}
+LETTERS == "R" #Gives a true or false if elements equals R
+
+which(LETTERS == "R") #Which prints which position the element is in
+
+which(ll <- c(T, T, F, T, NA, F, F)) #Which prints the positions of the elements that equal TRUE
+```
+
+
+Str verbs to learn - 
+`str_detect` - Detects if a given character string is present in an object
+`str_count` - Counts how many times a character vector is present in an object
+`str_subset` - Extract and replace substrings from a character vecotr
+`str_locate` - Locate the positions of patterns in a string
+`str_extract` - Extract matching patterns from a string
+`str_match` - Extracts matched groups from a string
+`str_replace` - Replaces matched patterns in a string
+`str_c` This function joins two or more vectors element-wise intro a single character vector
+`str_length` Gives how many characters there are
+
+```{r}
+library(stringr)
+something <- c("hat", "cat", "bat")
+nchar(something)
+str_length(something) 
+str_count(something, "a")
+str_detect(something, "a")
+
+```

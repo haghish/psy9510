@@ -1,0 +1,160 @@
+---
+title: "PSY9510-Day1"
+author: "Heemin Kang"
+date: '2022-09-26'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# *Introduction to the R language*
+
+## Set-up
+
+- `source(filename)` causes _R_ to accept its input from the named __file__ or __URL__. Input is read until the end of the file, then the lines are evaluated sequentially in the chosen environment.
+- `setwd(path)` sets the passed argument as a working directory
+- Two types of _Environment_: Global (accessible in the current working space) vs. local
+- *Comment*  along the codes in consistent structure for better readability!
+- `help(function_name)` or `?(function_name)` opens <help> document
+- `str(obj)` compactly displays the internal structure of an R object. More general than typeof()
+
+## Installing and loading packages
+
+`install.packages("tidyverse")`
+```{r, message = FALSE}
+library(tidyverse)             # load the tidyverse library
+```
+
+## Assigning value(s) to a variable
+```{r, message = FALSE}
+assign(x = "variable", value = 5)
+
+I <- c(1, 2, 3)                # c(...): concatenate the passed arguments
+S <- c("A", "B", "C")
+B <- c(1, 2, "A")              # coercing data type numeric to character
+
+TF <- c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+str(TF)
+length(TF)
+
+rm(variable)                   # removes a given variable for environment
+
+```
+
+ 
+## Creating a list
+- List 1
+- List 2
+  - List 3
+  - List 4
+
+## Creating a table
+[tablesgenerator.com](https://www.tablesgenerator.com/markdown_tables)
+
+| A | B |
+|---|---|
+| 1 | 2 |
+| 3 | 4 |
+
+## Working with dynamic R tables
+
+As you see, Rmarkdown's tables are stupid and we want a smarter way for working with dynamic tables. For this, we use the `pander` R package.
+
+```{r}
+library(pander)
+data(cars)
+#pander(cars[c(1:5),])
+pander(head(cars, n = 5L))
+pander(tail(cars, n = 3L))     # L just means integer    
+```
+
+A = 6    # 6.0000000...  
+B = 6L   # 6                 
+
+```{r}
+data(iris)
+pander(iris, n = 4)
+```
+
+## Creating a dataset
+
+We can create a data frame using the `data.frame` function
+
+```{r}
+#help("data.frame")
+```
+
+Let's print all the English letters. It's defined in R automatically and we do not need to define it ourselves
+```{r}
+LETTERS
+L3 <- LETTERS[1:3]             # [] subsets a vector by the given indices
+```
+
+## Subsetting data in R
+
+```{r}
+data(iris)
+print(iris[10:15,])
+```
+Select the rows 12:14 and columns 2:5
+```{r}
+pander(iris[12:14, 2:5])  # pander() generates a more readable table than print()
+```
+
+You can also be very selective in indexing
+```{r}
+#pander(iris[c(1, 3 ,5 , 6, 1), 2:5])
+dim(iris[iris[1]>5,])[1]
+```
+
+
+```{r}
+name = c("Emily", "Julie", "Stina", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik", "Haghish")
+age = c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45, NA)
+gender = c("female", "female", "female", "male", "female", "female", "male", "male", "male", "male", "male")
+
+
+df <- data.frame(name, age, gender)
+```
+
+**QUESTION**: What is th mean of age for female participants of the class PSY9510?
+
+```{r}
+df[df$gender == "female", "age", drop = FALSE]
+mean(df[df$gender == "female", "age"])
+```
+Let's assign the mean to an R object
+```{r}
+femmean <- mean(df[df$gender == "female", "age"])
+
+```
+The analysis showed that the mean age of females in this data set is `r femmean`. **This way, we can bring R objects inside text**.
+
+
+Let's calculate the standard deviation for male's age:
+
+```{r}
+# help(sd)
+sd(df[df$gender == "male", "age"], na.rm = TRUE)
+```
+
+
+How can I evaluate if the age of the participants is above or equal to 35 or not?
+
+```{r}
+val <- df$age >= 35
+
+df$age35 <- val
+pander(df)
+```
+
+
+We can add figures to R Markdown. Here I will add a histogram using the `hist` function.
+
+```{r}
+data(cars)
+hist(cars$speed, size = c(5,5))
+```
+

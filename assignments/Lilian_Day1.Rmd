@@ -1,0 +1,75 @@
+---
+title: "test"
+author: "L. Mayerhofer"
+date: '2022-09-26'
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# R Markdown
+
+# Heading
+
+To write headings at an R markdown, we add `#`. If we add additional `#`, we have subheadings.
+
+## Example 1
+
+### Example 2
+
+#### Example 3
+
+
+#Monday Morning
+
+We learned about vectors and so!
+```{r, message = FALSE, warning = F}
+print("hello world")
+library(tidyverse)
+assign (x = "A", value =10)
+A
+print(c(10, 20, 30, "psy9510"))
+```
+
+##Creating a list
+
+
+#Working with dynamic R tables
+As you see, Rmarkdown's table are stupid and we want a smarter way working with dynamic tables. For this, we use the `pander` R package
+
+```{r}
+library(pander)
+data(cars)
+pander(cars)
+pander(head(cars, n = 6L))
+pander(tail(cars, n =3L)) # L just means an integer, we can simply remove it.
+```
+
+
+#Create a dataset
+For that, we use `data.frame`
+```{r}
+help("data.frame")
+```
+
+## Printing English letters.
+These are already defined in R. 
+```{r}
+LETTERS
+L3 <- LETTERS[1:3]
+```
+
+#Subseting
+```{r}
+data(iris)
+sub1 <- iris[10:15,]
+sub1
+```
+```{r}
+pander(iris[12:14, 2:5])
+```
+

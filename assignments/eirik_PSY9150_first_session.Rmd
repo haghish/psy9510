@@ -1,0 +1,212 @@
+---
+title: "Test"
+author: "E. G. Blakstad"
+date: '2022-09-26'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Heading 1
+
+## Heading 2
+
+### Heading 4
+
+#### Heading 4
+
+##### Heading 5
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Monday morning
+
+Assigning
+----------------
+
+assign values to a variable
+
+```{r}
+print("hello world")
+library(tidyverse)       #load tidyverse package 
+
+#Assigning
+assign(x = "A", value = 10)
+# or
+assign("A", 10)
+# or 
+A <- 10
+```
+
+Concatenate
+----------------
+
+The function c creates a vector with  values that are numeric, integer, or strings 
+
+The function print gives you the output of a value
+
+Logical operators (i.e., |, <, >, ==, <=, >=) gives TRUE/FALSE output 
+
+```{r}
+print(c(10, 20, 30))
+print(c(10, 20, 30, "PSY9510"))
+
+B <- c(1, 2, 3, 4)
+S <- c("hi", "hello")
+X <- (1:10)
+
+X[(X>8 | (X<5))]        # select a subset []
+TF <- c(FALSE, FALSE, FALSE, TRUE, TRUE, TRUE)
+TF
+```
+
+Creating a list
+=========================================================
+
+
+- List 1 
+- List 2
+  - List 3
+  - List 4 
+  
+  
+  
+Working with dynamic R tables
+======================================
+
+Rmarkdown's tables are studpid, we want a smarter way for working with dynamic tables, for this we use the `pander`R package
+
+```{r}
+library(pander)
+data(cars)
+pander(cars)
+help("head")
+
+pander(head(cars))
+pander(tail(cars, n = 3L)) # L specifies integer, we can simply remove it 
+
+
+```
+```{r}
+help("data")
+data(iris)
+pander(iris, n = 4)
+```
+Creating a dataset
+====================
+
+We create a data.frame using the `data.frame` function
+
+```{r}
+help("data.frame")
+```
+
+Let's print all the english letters. It´s defined in R automatically and we do not need to define it ourselves 
+
+```{r}
+LETTERS
+L3 <- LETTERS[1:3]
+```
+
+
+Subsetting data in R 
+=====================
+
+```{r}
+data(iris)
+print(iris[10:12, ])
+```
+
+select the rows 12:14 and columns 2:5
+```{r}
+pander(iris[12:14, 2:5])
+```
+
+
+You can also be very specific in indexing. The first vector index rows and the second vector index columns
+
+```{r}
+pander(iris[c(10, 13, 33, 1, 1), c(5, 2, 3, 2, 4, 5)])
+
+help("dim")      # retruece ir set the dimension of object
+dim(iris)
+```
+
+Dim shows the dimensions of a dataframe 
+Pander 
+
+
+Creating a data.frame
+======================
+
+```{r}
+name <- c("Emily", "julie", "Stina", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik")
+age <- c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45)
+gender <- c("female", "female", "female", "male", "female", "female", "male", "male", "male", "male")
+df <- data.frame(name, age, gender)
+pander(df)
+```
+QUESTION: What is the mean of age for female participants of the class PSY9510
+
+```{r}
+help(mean)
+
+mean(df[df$gender == "female", "age"])
+```
+
+Let's assign the mean to a R object
+
+```{r}
+femmean <- mean(df[df$gender == "female", "age"])
+```
+
+The analysis showed that the mean age of females in the dataset is `r femmean`. **This way, we can bring R objects inside text** 
+
+
+Let's calculate the standard deviation for male's age
+```{r}
+help(sd)
+sd(df[df$gender == 'male', "age"], na.rm = TRUE)
+```
+
+
+How can i evaluate if the age of the participants is above or equal to 35 or not 
+```{r}
+val <- df$age >= 35
+
+# now I define a new variable
+df$age35 <- val
+
+```
+
+
+Create a histogram in the Rmarkdown file from `cars` dataset 
+We can add figures to our markdown - add histogram using `hist` function
+```{r}
+help(hist)
+
+hist(cars$speed)
+```
+
+Summary
+==========================
+
+Today we looked into creating headings in Rmarkdown, assigning values and creating vectors. We also learnt how to create data frames and subset from these, as well as creating tables. Finally, we learnt how to calculate the mean and sd of specific variables from a dataset. 

@@ -1,0 +1,200 @@
+---
+title: "Notes from PSY9510 class, Tuesday"
+author: "Steffen"
+date: "2022-09-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+```{r}
+S<-c("some", "character", "for", "the", "example") #Generating a random vector for the purpose of an example.
+for (indiancurry in S){ "Setting up a for loop, also specifyin that one may deviate from always using 'i' as the counting variable through the lopps. As there are 5 elements in S, the loop reiterates 5 times, and: "
+print(indiancurry) #... prints the contents of the vector, each element at a time."
+}
+
+```
+
+
+```{r}
+#help("list")
+#help(readRDS)
+#help(ls)
+ls() #This is a function than is used to specify the list ofthe names of all the objects in the working environment. 
+
+```
+
+```{r}
+#help(read.csv)
+#help("write.csv")
+data("iris") #This function/comman imports the "iris" dataset into the working environment.
+#help(unlink)
+assign(x="df2", value=readRDS("testdata.RDS")) #Here the variable df2 is defined with values from the 'testdata.RDS' RDS file.
+data(airquality) #Here the airquality datafile is imported.
+View(airquality) #This shows the airquality dataset.
+dim(airquality) #This gives the dimensions of the airquality dataset, rows and columns.
+str(airquality) #The str() funciton copactly summarizes the internal structure of an R object, as is thus done with the airquality dataset.
+
+```
+
+
+```{r}
+#help(subset)
+subset(airquality, Temp > 80, select = c(Ozone, Temp)) #Choosing a selected subset of the more interesting columns in the airquality dataset, selecting a subset of the data where the temperature is above 80, and only including the columns with the czone and temperature data. 
+subset(airquality, Ozone > 100, select = c(Ozone, Temp, Month)) #An optional subset, selecting measurements where the ozone-level is above 100, and including temperature and month. Results indicate that the measurements i the subset revolves around the summer months (but also includes the 30th of May).
+subset(airquality, Ozone > 100 & Month > 5 & Month < 9, select = c(Ozone, Temp, Month)) #Updating the selection from above, restricting the analysis to the summer months.
+subset(airquality, Ozone > 100 & (Month <= 5 | Month >= 9), select = c(Ozone, Temp, Month)) #Creating a subset of the more interesting points, where the measurements of ozone are above 100, specifically excluding the summer months. Which results in the measurement on the 30. of May.  .
+```
+
+```{r}
+subset(airquality, Day == 1, select = -Temp) #Prints a selected subset from the data, the first of each month, excluding the temperature column.
+```
+
+```{r}
+subset(airquality, select = Ozone:Wind) #The subset printed here lists the sequence of columns 'from Ozone to Wind'.
+subset(airquality, select = 1:3) #This code prints the same as the one above, where columns are specified through numbers.
+```
+
+
+```{r}
+#help("colnames")
+library(foreign) #Importing the foreign library.
+library(haven) #Importing the haven library.
+#install.packages("readstata13")
+```
+
+Restarting R session...
+
+```{r}
+#install.packages("foreign")
+#install.packages("haven")
+#library(foreign)
+#help("read.spss")
+#library(readstata13)
+#help("readstata13")
+#library(readxl)
+#help("readxl")
+#help("read_excel")
+#help("summary")
+
+```
+
+```{r}
+data(attenu) #Importing the attenu dataset.
+View(attenu) #Viewing the attenu dataset.
+colnames(attenu) #Printing the columnnames of the attenu dataset.
+vec<-colnames(attenu) #Generating a vector with the columnnames of the attenu dataset.
+length(vec) #Checking the length of the vector, contains 5 columns/names thus 5 elements.
+class(vec) #Checking the class of the vector, which is 'character'.
+vec[3] #Prints the third element of the vector 'vec'.
+summary(attenu,digits=4) #Provides a summary of the attneu dataset, with 4 digits.
+summary(attenu,digits=8) #The same as above, but with 8 digits.
+```
+
+
+
+```{r}
+#help("NA")
+#help("is.numeric")
+attenu$event #Creates a row of the elements in the first column of the attenu dataset. 
+length(attenu$event) #...which is 182 elements,
+
+length(attenu$station) #Counts the number of elements in attenu$station.
+is.na(attenu$station) # When searching for 'NA' values in the station column of the attenu dataset, one may turn the question around, this logically checks if the element is "NA" and if so, returns "TRUE".
+
+
+sum(is.na(attenu$station)) #Summing the number of elements, and since it is binary values (TRUE/FALSE), then returns the number of TRUE elements, but, since there is another function within - the "is.na" function -, then it counts the number of NA elements, thus, the number of FALSE logical values, which eqauals that in the station column of the attenu dataset, there are 16 missing elements.
+
+```
+
+
+for (pasta in vec){ #Again, specifying that the counterr in the loop can be entire arbitrary. 
+  cat(pasta) #No separator, gives an output of one element; the elements are concatenated to a single character vector.
+}
+
+
+
+```{r}
+#help(mean)
+#knitr::opts_chunk$set(echo = TRUE)
+summary(cars) #Creates a summary of the cars dataset.
+```
+
+
+```{r}
+plot(pressure) #A function that plots the data 'pressure'.
+
+if (is.numeric(iris$Species)){ #A for loop checking if the elements in the column Species in the iris dataset are numeric.
+  mean(iris$Species) #If so, then takes the mean.
+} else { 
+  str(iris$Species) #Otherwise, 'compactly displays the structure of (the) Arbitraty R object'.
+}
+```
+
+
+
+```{r}
+#help("sum")
+plot(cars$dist) #Creates a scatter plot where the column 'distance' is plotted against the index-number of the measurement, the plot therefore has no sense or purpose. 
+#cars$dist
+plot(cars$speed,cars$dist) #Plotting the speed of the cars measured gainst the distance traveled intuitively makes much more sense.
+```
+
+
+```{r}
+#help("paste")
+vec<-cars$speed #Creating a vector 'vec' with the values of the speed column of the cars daraset.
+
+for (pasta in vec){ #Again, specifying that the counterr in the loop can be entire arbitrary. 
+  cat(pasta) #No separator, gives an output of one element; the elements are concatenated to a single character vector.
+}
+
+
+for (pasta in vec){
+  cat(pasta, "\n") #Separates the elements by a line change.
+}
+
+for (pasta in vec){
+  cat(pasta, " .testing. ") #Separating the elements a random separator.
+}
+
+
+```
+
+```{r}
+#help("substring")
+fn<-"tofu" #Defining the object fn as the word 'tofu'.
+nchar(fn) #Measuring the number of characters in the object 'fn', which is 4.
+length(fn) #As opposed to the number of elements in fn, which is 1.
+substr("cooked tofu", start=1, stop=2) #Choosing a subset of a string, starting at position 1 and ending at position 2, resulting in 'co'.
+substr("cooked tofu", start=8, stop=12) #Choosing a different subset, isolating the word 'tofu'.
+#help("strsplit")
+strsplit(x="cooked tofu",split=" ") #Splitting the string at the space, generates 2 words.
+strsplit(x="cooked tofu",split="oo") #Splitting the string at the 'oo', also generates 2 elements, the 'oo' is removed. 
+strsplit(x="cooked tofu",split="o") #Splitting the string at the 'o',  generates 4 elements, the o's are removed.
+state.name #Lists up the elements of a vector with all the names of the 50 US states.
+substr(state.name, start=1, stop=3) #Creates a substring with the three first characters in the names of each of the 50 states.
+
+
+#help("which")
+which(LETTERS == "R") #Checks the English alphabet if it contains the letter 'R', and if so, returns its index, thus 18.
+which(ll<-c(TRUE, FALSE, NA, TRUE, FALSE, NA)) #Defining the 'll' vector with local values, and using the which function to check the vector for logical truths, which in his vector is in position 1 and 4.
+library(stringr) #mporting the stringr library.
+x<-c("why","video","cross","extra") #Defining a new vector.
+str_length(x) #Using a function from the imported library to count the number of characters in each isolated element in the vector x.
+```
+
+
+#Installed the devtools from Github
+#Installed regexplain
+
+
+
+
+

@@ -1,0 +1,355 @@
+---
+title: "Day 2"
+author: "J.M. Lengle"
+date: "2022-09-28"
+output: html_document
+---
+
+# **Introduction to statistics in R: 2**
+
+# *Follow-up of day 1*
+
+## Loops
+
+* Many uses
+   + we can use loops to subset
+   + or to repeat an action for a number of variables
+      + f.ex.taking mean of every variable in a set, changing column names
+
+```{r}
+for(b in 1:5){print(b)}
+s <- c("some", "character", "for", "the", "example")
+for(i in s){print(i)}
+for(indiancurry in s){print(indiancurry)} #we can use any word as the i in a for() loop
+for(b in 1:5){print(s[b])}
+s[3]
+```
+
+* We can also use loops for *if-else statements*
+
+```{r}
+A <- 6
+if(A<2){print("small")} else {print("big")}
+ifelse(s!="example", " ", s)      #use ifelse() for vectors
+```
+
+# Working with Data
+  + Loading data into R
+  + Writing data in different formats
+  + Summarizing data
+
+## Loading data into R
+
+* R has a number of built-in datasets that can be accessed with functions, f.ex. `data(cars)` or `data(iris)`
+* R can also read a dataset stored in computer with `readRDS()` or `saveRDS()`
+  + To use `readRDS()` you only need the file
+  + To use `saveRDS()` you need the object and the file: (name of R file to save, desired file name)
+      + In RDS you can save only one file
+      + RDS is a binary data type. "object to serialize"=to make binary
+      + RData is more general and can include many objects in a single file
+
+```{r eval=FALSE, echo=TRUE}
+help(readRDS)
+data(iris)
+saveRDS(iris, "testdata.RDS")   #save a file in your current WD
+assign(x="df2", value = readRDS("testdata.RDS"))
+df2 <- readRDS("testdata.RDS")
+```
+
++ You can view a list of objects in the workspace or clear the R workspace within the RStudio GUI, or by typing `ls()` or `rm(ls())`, respectively
+   + Typing `ls()` with no object, causes R to list all objects you have
+       +`character(0)` means nada
+
+```{r eval=FALSE, echo=TRUE} 
+ls()                            #list objects 
+rm(ls())                        #remove objects from the workspace
+```
+
+### CSV data format
+  + Comma separated
+  + Most popular type of data, can be read in a text file
+  + Every row of the data ends with a new line
+  + CSV file can also be a complete URL
+  
+```{r eval=FALSE, echo=TRUE} 
+help(read.csv)  
+data(iris)
+write.csv(iris, file="iristest.csv")  #create csv file
+help(unlink)
+unlink("iristest.csv")   #delete file from wd
+unlink("testdata.RDS")
+```
+
+## Using data from the internet
+
++ R can access data from the internet and read the data without storing it on the disk
++ R can read files directly from html links
+
+```{r eval=FALSE, echo=TRUE}
+help(download.file)       #use download.file to download from the internet
+```
+
+## Reading STATA data
+
+df <- readstata13::read.dta13("path/to/file.dta") # :: use this package specifically
+
+```{r eval=FALSE, echo=TRUE} 
+install.packages("readstata13")
+install.packages("foreign")
+```
+
+```{r eval=FALSE, echo=TRUE} 
+??read.stata
+library(readstata13)
+help("readstata13")
+```
+
+### Exploring data
+
+```{r eval=FALSE, echo=TRUE} 
+data(airquality)
+View(airquality)              #view the data
+dim(airquality)               #inquire about data dimensions
+str(airquality)               #inquire about structure of data
+help("subset")
+airquality$Temp>80            #extract observations where temp>80
+subset(airquality, Temp>80, select=c(Ozone,Temp)) #show ozone and temp for data points where Temp>80
+subset(airquality, Day==1, select=-Temp) #drop/exclude Temp from data set on day 1
+subset(airquality, select=Ozone:Wind) #show columns ozone through wind
+subset(airquality, select= -c(Temp,Wind)) #drop/exclude both Temp and Wind from data set
+colnames(airquality) #retrieve column names
+rownames(airquality) #retrieve row names
+help("colnames") 
+```
+
++ If loading STATA or SPSS data into R, be extra careful with factors
+
+```{r eval=FALSE, echo=TRUE} 
+help(factor)
+is.factor(airquality$Temp)  #is airquality$Temp a factor? T/F
+class(airquality$Temp)      #what is the class?
+str(airquality$Temp)        #what is the structure?
+```
+
+## Reading Excel sheets
+
++ Tidyverse: collection of R packages including readxl
+
+```{r eval=FALSE, echo=TRUE} 
+library(readxl)
+help("read_excel")
+readxl_example()
+readxl_example()
+readxl_example("clippy.xls")  #example file from readxl package
+xlsx_example <- readxl_example("datasets.xlsx")
+read_excel(xlsx_example)      #reads both xls and xlsx files
+xls_example <- readxl_example("datasets.xls")
+read_excel(xls_example)       #use `print(n = ...)` to see more rows
+excel_sheets(xlsx_example)    #list the excel sheet names
+read_excel(xlsx_example, sheet = "chickwts") #specify a sheet name by name or number
+read_excel(xls_example, sheet = 4)
+read_excel(xlsx_example, n_max = 3) #specify the sheet and cell range
+read_excel(xlsx_example, range = "C1:E4")
+read_excel(xlsx_example, range = cell_rows(1:4))
+read_excel(xlsx_example, range = cell_cols("B:D"))
+read_excel(xlsx_example, range = "mtcars!B1:D5")
+read_excel(xlsx_example, na = "setosa") #if missing cells are represented by something else than NA, set the NA argument
+```
+
+### Write an SPSS file from an R object
+
+```{r eval=FALSE, echo=TRUE} 
+data("airquality")
+haven::write_sav(data=airquality, path="airquality.sav")
+```
+
+## Read an SPSS file into R
+
+```{r eval=FALSE, echo=TRUE} 
+??read.spss
+df <- haven::read_sav(file = "airquality.sav")
+str(df)
+library(pander)
+pander(head(df))
+```
+
+```{r eval=FALSE, echo=TRUE}  
+help(summary)
+data(attenu)
+View(attenu)
+colnames(attenu)
+vec <- colnames(attenu)   #create a vector that consists of the column names
+class(vec)              
+vec[3]                    #extract the third column name
+vec2 <- vec[3:1]          #extract column names 3,2,1 in that order
+summary(attenu, digits=4) #summary data on data columns
+is.na(attenu)             #T/F about whether data=missing for each observation
+help(is.na)
+```
+
+```{r}
+help("is.numeric")
+if (is.numeric(attenu$event)==TRUE){mean(attenu$event)} #calculate mean of all numeric values in column events
+if (is.numeric(attenu$event)){mean(attenu$event)} else {str(attenu$event)} #calculate mean of all numeric values in column events, otherwise describe data structure
+help("mean")
+if(is.numeric(iris$species)){mean(iris$species)} else {str(iris$species)} 
+is.na(attenu$station)         #list of T/F statements
+length(is.na(attenu$station)) #this doesn't work since it counts all statements in the vector, i.e. both true and false
+sum(is.na(attenu$station)) #sum of true and false gives number of missing observations since true 1 and false 0
+help(sum)
+```
+
+# Create a scatter plot
+
+```{r}
+plot(cars$dist) #create scatterplot. index and number. index is the number of the observation
+cars$dist
+plot(cars$speed,cars$dist) #specified the x and the y
+```
+
+# Working with character variables
+
++ Important printing functions
+  + `paste()`
+  + `cat()` (can't assign to default)
+  + `print()`
+*Note: atomic data structures can only have one type of data. Vectors are atomic data structures and can only have one data type. Thus, when you evaluate whether a vector is character or number or not, you only get one T/F, not an evaluation for every element of the vector.*
+
+```{r eval=FALSE, echo=TRUE} 
+help("paste") #paste function automatically concerts vectors to character
+help(as.character) #converts to character
+help ("cat")
+help("print")
+is.character(cars$speed)
+vec <- cars$speed
+is.character(vec)
+vec
+for(pasta in vec){print(pasta)} #paste does not work in a loop, have to use print()
+for(pasta in vec){paste(pasta)}
+for(pasta in vec){cat(pasta, "\n")} #now it will work - \n means end of line
+```
+
+```{r}
+help("substring") #extract or replace substrings in a character vector
+fn <- "tofu"
+nchar(fn)         #since tofu is a 4-letter word, nchar=4
+substr(fn, 1, 2)  ##extract part of the word
+substr("cooked tofu", start=1, stop=2) #extract part of the word
+mystring <- "dog cat duck"
+substring(mystring, c(1,5,9), c(3,7,12)) #divide into separate words
+```
+
++ Search for words/strings in a data set (could be an article f.ex., searching for key words)
+
+```{r}
+help(strsplit) #a space within "" in R does not signify that it is two words, the space will just be counted as one of the characters in the object
+strsplit(x="cooked tofu", split= " ") #to split the "" object into two words based on space in between, break this string based on the defined separator
+paste("one",2,"three", 4)
+paste("one",2,"three", 4, sep=";")
+help(which)
+which(LETTERS == "R") #to see which element in a vector is true to be given value
+which(ll <- c(TRUE, FALSE, TRUE, NA, FALSE, FALSE, TRUE)) #which means give me/return which elements in the vector are true
+```
+
+## Stringr
+  + Another tidyverse package
+  + Use for cleaning variables
+  + 7 main verbs:
+  
+      + `str_detect` search for a specific text in your string
+      + `str_count`
+      + `str_subset`
+      + `str_locate`
+      + `str_extract takes part of word you're interested in`
+      + `str_match makes sure this exists in the string you're looking for`
+      + `str_replace`
+  
+  + _ is metagrammar in tidyverse package for naming functions
+  
+```{r eval=FALSE, echo=TRUE} 
+library(stringr)
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+str_length(x)
+nchar(x[1])
+str_c(x, collapse = ", ")
+str_sub(x,1,2)
+str_subset(x, "[aeiou]") #when you search for strings in r you define a regular expression. an app in R studio can help you figure it out.
+#install.packages("devtools")
+devtools::install_github("gadenbuie/regexplain") # search for patterns, pattern could be an integer
+regexplain:::regexplain_addin() # add-in console pops up
+```
+
+* regexplain can be used to search for numbers, expressions, words, ++ in a sample of text or data
+
+# Working with factor variables
+
+* Create ordinal(ordered) factors
+* Factor variables are categorical variables, either numeric or character variables
+  + they are treated speically in statistical modelling
+  + should be stored as factors
+     + use `factor()` to convert categorical variables to factors
+     + R stores factors as a vector or integer values with a corresponding set of          character values to use for each value when the factor is displayed
+     
+```{r}
+data <- c(1,2,2,3,1,2,3,3,1,2,3,3,1)
+var <- factor(data)
+var
+levels(var)    #levels are always characters
+levels(var) <- c("low", "mid", "high") #levels can be indexed and labeled
+var <- factor(data)
+factor(data, labels=c("I", "II", "III")) #define labels using the labels argument, which belongs to the factor() function
+nlevels(var)   #how many levels are there?
+class(var)
+mode(var)
+```
+
+* You can convert factors to numeric or characters again in order to perform arithmetic operations, using levels
+
+```{r}
+levels(b)[b]
+as.numeric(levels(b)[b])  #this converts the factor to a character variable, and then to a numeric variable which looks simpler
+```
+
+## Ordinal factors
+
+* Methods and functions treat ordered factors and factors differently
+  + use the argument `ordered=TRUE`in the `factor()` function to create ordered factors, or use the `ordered()` function
+  + an ordered factor has class c("ordered", "factor")
+  + you must first turn ordered factors back to numeric factors before doing calculations
+  
+```{r eval=FALSE, echo=TRUE} 
+ordered(var)
+class(ordered(4:1))
+(b <- factor(a, ordered=TRUE))
+(b <- ordered(a))
+```
+
+## Manipulating factors
+
+* If subsets of a factor are extracted, the subsets will retain all of the original levels, even if they do not exist inthe subset
+  + should remove them
+  
+```{r}
+lets <- sample(letters,size=100,replace=TRUE)
+lets <- factor(lets)
+table(lets[1:5])
+table(lets[1:5,drop=TRUE]) #drop=TRUE argument removes unused levels
+table(factor(lets[1:5]))   #passing the factors to the table() function does same
+```
+
+  + use the `exclude=` argument in the `factor` function to exclude a particular level
+  + use the `cut` function to create factors from continuous variables
+  + when combining variables which are factors, since the c function will interpret the factors as integers, they should first be converted back to their original values (using levels function), then catenated and converted to a new factor
+  
+```{r}
+fact1 <- factor(sample(letters,size=10,replace=TRUE)) 
+fact2 <- factor(sample(letters,size=10,replace=TRUE))
+fact1
+fact2
+fact12 <- factor(c(levels(fact1)[fact1],levels(fact2)[fact2]))
+fact12
+```
+
+# Closing
+
+*That's it for now!*

@@ -1,0 +1,264 @@
+---
+title: "psy9510 Day 2"
+author: "Nadine Farnes"
+date: '2022-09-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This markdown document gives examples of different functions in R learned in the course PSY9510 on day 2.
+
+# FOR-LOOP IN R
+We can use loops for performing repetitive tasks. The loops repeat operations a specified number of times. We can use the `for loop` to loop a function over a vector or matrix. This saves time and processing power, and is an efficient way to perform a function without using many lines of code.  
+First, we state an index _b_ which equals 1 in the first iteration and 5 in the last iteration.  
+Then we state the function we want to be repeated, here `print()`. 
+```{r}
+for(b in 1:5) {       
+  print(b)            
+  }
+```
+
+Below is another example with a vector containing strings. Here we specify that _i = S_, which takes on the first element of _S_ in the first iteration, and continues through the vector until _S_ has reached its length. We print _i_ in each iteration, meaning we print each element in the vector.
+```{r}
+S <- c("some", "character", "for", "the", "example")
+
+for(i in S) {
+print(i)
+}
+```
+
+Another way to achieve the same output is given below. Here _b_ takes on values from 1 to 5. _print(S[b])_ means that we print the _bth_ character from _S_, again printing each element of the vector.
+```{r}
+for(b in 1:5) {
+  print(S[b])
+}
+```
+
+# Read and save datafiles
+
+We can read datafiles from the working directory or save a dataframe to the current working directory using `readRDS()` and `saveRDS()` respectively.
+```{r}
+data(iris)                           # load the data
+saveRDS(iris, "testdata.RDS")        # save the RDS file to the current working directory
+df2 <- readRDS("testdata.RDS")       # read the RDS file and assign to a new variable called df2
+```
+ 
+ 
+## CSV format
+CSV formats are dataformats usaully separated by a comma or semicolon, and where every row of the data ends with a new line.  
+To read the CSV format files we can use the funtion `read.csv()`, and save to the current working directory we can use `write.csv()`.
+
+```{r}
+write.csv(iris, "iristest")         # write to .csv format
+iris2 <- read.csv("iristest")       # read -csv format and assigning to a new variable iris2
+```
+
+## SPSS format
+
+Reading and writing SPSS datafiles can be facilitated through the packages `foreign`and `haven`.
+We can write an SPSS file from an R object using `write_sav()`, and read an SPSS file into R using `read_sav()`.  
+We can use `::` to access the specific function from the haven library.
+
+```{r}
+library(foreign)                                            # load library foreign
+library(haven)                                              # load library haven
+data("airquality")                                          # load dataset
+haven::write_sav(data=airquality, path="airquality.sav")    # the data airquality is written to a .sav file with the filename given by path
+df <- haven::read_sav(file = "airquality.sav")              # reading the .sav file and assigning it to a new variable
+```
+
+> Remember to be careful with variables that have labels. They might be converted to factor (nominal) variables in R, even if they are stored as numeric in SPSS. We can specify this in `read.spss()` using argument _use.value.labels = FALSE_
+
+## STATA format
+
+We can write data to stata binary format and read using the libraries `foreign` and`readstata13`. 
+`write.dta()`writes to a Stata format while `read.dta13()`reads a Stata .dta file and imports the data into a dataframe.  
+We can specify if we do not want R to make factors out of the labels by using the argument _convert.factors = FALSE_.
+<!-- continue HERE!!!! -->
+
+```{r}
+library(readstata13)                                         # load library readstata13
+foreign::write.dta(airquality,"airquality.dta")              # the data airquality is written to a .dta file
+df2 <- readstata13::read.dta13("airquality.dta")             # reading the .dta file and assigning it to a new variable
+```
+
+
+## EXCEL format
+
+We can use the `read_excel` package to read excel files to R.
+
+find the examples in the library
+
+```{r}
+library(readxl)                                               # load the library readxl
+readxl_example()                                              # showing the example files that read_excel has
+xlsx_example <-(readxl_example("datasets.xlsx"))              # assigning the dataset to a new variable 
+xlsx_example2 <- read_excel(xlsx_example)                     # reading the dataset and assigning it a new variable
+```
+
+## Worksheets
+We can specify which worksheets we want to access in the excel file. First we can list the sheet names using `excel_sheets()` and then we can specify which sheet we want to work with using the argument _sheet_ in `read_excel()`.
+```{r}
+excel_sheets(xlsx_example)                                    # list sheets
+read_excel(xlsx_example, sheet = "chickwts")                  # specify sheet by name
+read_excel(xlsx_example, sheet = 4)                           # specify sheet by number
+```
+
+## Reading cells
+
+<!-- KONTROLLER DENNE KODEN! -->
+
+
+We can also control which cells are read in the excel file by using arguments of `readexcel()`.
+```{r}
+read_excel(xlsx_example, n_max = 3)                      # Read a maximum of 3 rows
+read_excel(xlsx_example, range = "C1:E4")                # Read cells C1 o E4
+read_excel(xlsx_example, range = cell_rows(1:4))         # Read only cell rows 1 to 4
+read_excel(xlsx_example, range = cell_cols("B:D"))       # Read only cell columns B to D
+read_excel(xlsx_example, range = "mtcars!B1:D5")         # Read only from the sheet called mtcars and cells B1 to B5
+```
+
+Furthermore, we can specify NAs if they are represented by something other than blank cells. Here, for example we set all cells named _setosa_ to NA.  
+```{r}
+read_excel(xlsx_example, na = "setosa")
+```
+
+
+# Cleaning the workspace/working directory
+ 
+We can use `ls()` to list the variables in your working directory/global environment. If you have an empty environment, it returns 0. Then we can use `rm()` to clear the workspace.  
+```{r}
+rm(list = ls())
+```
+
+We can also remove files from the working directory using `unlink()`.  
+```{r}
+unlink("iristest.csv")
+```
+ 
+
+# Subsetting
+
+We have previously learned that we can use brackets _[]_ to access parts of a dataset. We can also subset vectors, matrices or dataframes using the `subset` function.
+```{r}
+head(subset(airquality, Temp > 80, select= c(Ozone, Temp)))  # Subset (showing head of dataset) where temperature is above 80 and only with columns Ozone and Temp
+subset(airquality, Day == 1, select = -Temp)           # All observations of day 1, but excluding the temperature variable
+subset(airquality, Day == 1, select = -c(Temp,Wind))   # Same, but excluding temperature and wind variables
+head(subset(airquality, select = Ozone:Wind))          # Head of observations of columns Ozone to Wind
+```
+
+
+
+
+# Names of rows and columns
+`colnames`gives column names of the matrix, while `rownnames`gives rownames of the matrix
+```{r}
+colnames(airquality)
+rownames(airquality)    #airquality does not have rownames so the function lists the rownumbers
+```
+
+
+# Checking class of data
+Previously, we learned that we can use the functions `str()`and class `class()` to check what datatype a vector contains. We can also check for each data type specifically using `is.factor()`, `is.character()` and `is.numeric()`, returning _TRUE_ or _FALSE_.
+
+```{r}
+is.factor(iris$Species)                        # check if a variable is a factor
+is.character(airquality$Temp)                  # check if a variable is a character
+is.numeric(airquality$Temp)                    # check if a variable is a numerical
+```
+
+
+# Summary 
+`summary()`gives a summary of the different variables in a dataframe, such as descriptive statistics of mean, median, minimum and maximum values. It also shows number of missing (NAs). We can also check missing with `is.na()`and `sum()`.
+```{r}
+summary(attenu)                                # summary of dataframe
+sum(is.na(attenu$station))                     # sum of the counts of missing in the variable
+```
+
+# If else statments
+We can make conditional statements in R using `if(){}`and `else(){}`. We read it as: "If X is TRUE do do this, if false do something else".  
+The general form of the code is shown in pseudocode below:
+```
+ if (condition) {
+  Code executed when condition is TRUE
+  } else {
+  Code executed when condition is FALSE
+  }
+```
+
+[Source](https://intro2r.com/conditional-statements.html)
+
+In the below example we say: if the variable event is numeric, calculate the mean of this variable. If not, print the structure of the variable. Since the first conditional statement is _TRUE_, the mean is printed.
+```{r}
+if(is.numeric(attenu$event)){
+  mean(attenu$event)
+} else {
+  str(attenu$event)
+}
+```
+
+# Working with strings
+
+## Subset of strings
+We can subset strings using `substr()` and `strsplit()`. 
+
+```{r}
+fn <- "cooked tofu"                                   # defining a new variable fn
+nchar(fn)                                             # find number of characters of fn
+substr(fn,8,10)                                       # give the 8th to 10th characters of the string
+substring(state.name, 1,3)                            # give the first three letters of each state
+
+strsplit(fn, " ")                                     # splits the string into two, the split being defined by the space 
+strsplit(fn, "")                                      # splits the string for all characters in the string
+            
+```
+
+## Combining strings
+
+We can use different printing functions to combine character strings: `paste()`, `cat()`, `paste0()`
+
+```{r}
+vec <- colnames(attenu)                          # a new variable containing column names of attenu
+paste(vec[1], vec[2], length(vec))                # concatenating string and numeric value into one string using paste()
+paste0(vec[1], vec[2], length(vec))               # same as above but with no spaces between
+
+for(pasta in vec) {                               # printing the elements of vec using a for-loop and cat() (with spacing)
+  cat(pasta, " ")
+}
+
+for(pasta in vec) {                               # same as above but with a line break between
+  cat(pasta, "\n")
+} 
+```
+
+## Which
+`which()` finds the position where the value equals TRUE
+
+```{r}
+LETTERS == "R"                                               # gives a logical array, where TRUE if equals R
+which(LETTERS == "R")                                        # finds indices of the where the Rs are, here 18 
+ll <- c(TRUE, FALSE, TRUE, NA, FALSE, FALSE, TRUE)           # make new logical array
+which(ll)                                                    # find indices which equals TRUE
+```
+
+## Searching for terms in string
+`stringr` package has several functions to search for specific terms in string
+`str_count()`, `str_subset()`, `str_extract()`, `str_replace()`
+
+```{r}
+library(stringr)
+x <- c("why", "video", "cross", "extra", "deal", "authority")   # new variable with string elements
+nchar(x[1])                                                     # how many characters does the first item have?
+str_length(x)                                                   # how many characters do all the elements have?
+str_count(x)                                                    # same as above
+str_subset(x, "[a]")                                            # finds all elements with "a" in them
+str_extract(x, "a")                                             # returns NA if "a" is not found, "a" if found
+str_replace(x, "a", "e")                                        # replaces all a's with e's
+
+tex <- ("I really have to leave in 2 min or 3")                 # a string with numbers in them 
+as.numeric(unlist(str_match_all(tex, "[0-9]+")))                # finds all numbers in strings. Unlist() makes them into separate unlisted elements, as.numeric turns them into numerical values
+
+```

@@ -1,0 +1,196 @@
+---
+title: "Test"
+output: html_document
+date: "2022-09-26"
+---
+
+print(B)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+# DAY 1
+# Heading 1
+
+## Heading 2
+
+## R Markdown
+
+### Heading 3
+
+#### Heading 4
+
+How to make headings using #, === or -----
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## FIRST SESSION
+- Making simple actions in R, installing the "tidyverse" package with install.packages and uploading to current markdown with library function
+- Using the ? or help function to get information on any type of functions. 
+- Creating vector with the c() function
+```{r}
+print("hello World")
+library(tidyverse)              # load the tidyverse library
+
+?str_replace #Compactly Display the Structure of an Arbitrary R Object
+?help(help)
+help(topic=help)
+2+2
+2*5
+help("assign")
+assign("A", 10)
+A <- 11
+?c
+str(A)
+
+c(10, 20, 30)
+c(10, 20, 30, "psy9510")
+
+B <- c(1, 3, 5, 6)
+S <- c("my", "world")
+x <- (1:10)
+typeof(x)
+str(x)
+length(x)
+x[(x>8) | (x<5)]
+TF <-  c(T, T, T, F, F, F)
+typeof(TF)
+length(TF)
+A < 20
+TF == 1:6
+TF == c(1,1,1,0,0,0)
+A != 10
+help(class)
+class(A)
+!A
+A != 20
+!TF
+?rm
+rm(A)
+getwd()
+```
+
+
+```{r, message=F}
+print("hello World")
+```
+
+## CREATING A LIST 
+- List 1
+- List 2
+    - List 3
+    - List 4
+    
+## WORKING WITH DYNAMIC E TABLES
+
+As you see, RMarkdown tables are stupid and we want a smarter way for working with dynamic tables. For this we use the `pander` R package
+
+```{r}
+library(pander)
+data(cars)
+# pander(cars) # this was unpractical
+head(cars)
+head(cars, n = 3)
+pander(head(cars))
+pander(tail(cars, n = 3L)) 
+```
+```{r}
+data("iris")
+pander(iris, n = 4)
+help(data)
+```
+
+## CREATING A DATASET
+help(data.frame)
+?data.frame
+lets print all the english letters, its defined in R automatically 
+
+```{r}
+L3 <- LETTERS [1:3]
+L3
+```
+
+## SUBSETTING DATA IN R
+
+```{r}
+data(iris)
+print(iris[10:12, ])
+```
+
+selecet the rows 12:14 and columns 2:5
+```{r}
+pander(iris[12:14, 2:5])
+```
+
+You can also be very selective in indexing
+```{r}
+pander(iris[c(1, 3, 5, 1), c(1, 3, 5, 7)])
+```
+
+```{r}
+B <- iris[1:10, 1:3]
+
+```
+
+## CREATING DATA.FRAME
+
+df [index1/rows, index2/colums]
+```{r}
+name <- c("Emily", "Julie", "Stina", "Eirik", "Nadine", "Sara", "Ole", "Anders", "Niklas", "Fredrik")
+age <- c(27, 25, 31, 26, 31, 22, 27, 37, 44, 45)
+gender <- c("female", "female", "female", "male", "female", "female", "male", "male", "male", "male")
+df <- data.frame(name, age, gender)
+pander(df)
+
+```
+
+### QUESTION WHAT IS THE MEAN AGE OF THE GROUP
+
+```{r}
+mean(age)
+mean(df[df$gender == "female", "age"])
+print(df[df$gender == "female", "age"])
+femmean <- mean(df[df$gender == "female", "age"])
+```
+The analysis showed the mean age of the females 
+
+### CALCULATE THE SD FOR MALES AGE
+
+```{r}
+sd(age)
+sd(df[df$gender == "male", "age"], na.rm = T)
+```
+
+### HOW TO EVALUATE IF THE AGE IS ABOVE OR EQUAL TO 35 OR NOT
+
+```{r}
+val <- df$age >= 35
+val
+pander(df)
+```
+
+we can add figures to Markdown, here we add histogram using `hist`
+```{r}
+hist(cars$speed)
+print(1:5)
+```
+
+Summary: The script is where you can type all kinds of functions, script and codes, which provides output in the console. However, by using the Rmarkdown, we can better combine text and functions by writing in "open" space, and using functions in the ```{r} ```
+The first lesson have taught structure in the markdown, installing and loading packages, assigning variables, subseting parts of data from a bigger data set, finding the mean and standard deviation.
