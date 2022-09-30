@@ -70,7 +70,7 @@ free to write as much as you like
 
 
 
-5. IF YOU HAD OTHER R/STATISTICS COURSES TAUGHT WITHOUT RMARKDOWN, HOW DOES THOS COURSE COMPARE TO THEM?
+5. IF YOU HAD OTHER R/STATISTICS COURSES TAUGHT WITHOUT RMARKDOWN, HOW DOES THIS COURSE COMPARE TO THEM?
 ============================================================
 
 
@@ -91,6 +91,7 @@ free to write as much as you like
 
 7. HOW LIKELY IS IT THAT YOU USE RMARKDOWN IN YOUR DAILY WORK AND WHY?
 ============================================================
+
 
 
 
